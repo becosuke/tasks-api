@@ -1,0 +1,6 @@
+/vendor/
+/output/*
+!/output/Dockerfile
+!/output/ca-certificates.crt
+!/output/zoneinfo.zip
+/swagger/*

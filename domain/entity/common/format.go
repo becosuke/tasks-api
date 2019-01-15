@@ -1,0 +1,5 @@
+package common
+
+const FORMAT_TYPE_COMPLETE = 1
+const FORMAT_TYPE_COMPACT = 2
+const FORMAT_TYPE_MINIMUM = 3
