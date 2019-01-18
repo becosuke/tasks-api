@@ -20,3 +20,15 @@ func GetDocumentsAll(limit int32, offset int32) ([]*entity.Document, error) {
 func GetCountAll() (uint64, error) {
 	return repository.CountAll()
 }
+
+func Create(title string) (*entity.Document, error) {
+	return repository.Create(title)
+}
+
+func Update(id uint64, title string) (*entity.Document, error) {
+	return repository.Update(id, title)
+}
+
+func Delete(id uint64) (*entity.Document, error) {
+	return repository.Delete(id)
+}

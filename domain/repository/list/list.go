@@ -96,3 +96,48 @@ func FetchAll(limit int32, offset int32) ([]*entity.Document, error) {
 
 	return FetchDocuments(ids)
 }
+
+func Create(title string) (*entity.Document, error) {
+	var err error
+
+	var val *entity.Entity
+	if val, err = database.Create(title); err != nil {
+		return &entity.Document{}, err
+	}
+
+	res := factory.Document(val)
+
+	return res, nil
+}
+
+func Update(id uint64, title string) (*entity.Document, error) {
+	var err error
+
+	var val *entity.Entity
+	if val, err = database.Update(id, title); err != nil {
+		return &entity.Document{}, err
+	}
+
+	cacheKey := entity.GetDocumentCacheKey(id)
+	cache.DeleteLocalCache(cacheKey)
+
+	res := factory.Document(val)
+
+	return res, nil
+}
+
+func Delete(id uint64) (*entity.Document, error) {
+	var err error
+
+	var val *entity.Entity
+	if val, err = database.Delete(id); err != nil {
+		return &entity.Document{}, err
+	}
+
+	cacheKey := entity.GetDocumentCacheKey(id)
+	cache.DeleteLocalCache(cacheKey)
+
+	res := factory.Document(val)
+
+	return res, nil
+}

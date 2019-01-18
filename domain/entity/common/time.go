@@ -35,6 +35,14 @@ func (t *Time) Scan(value interface{}) (err error) {
 	return nil
 }
 
+func (t Time) Unix() int64 {
+	if t.IsNull() {
+		return EpochTimestamp
+	} else {
+		return t.Time.Unix()
+	}
+}
+
 func (t Time) Value() (driver.Value, error) {
 	if t.IsNull() {
 		return nil, nil
@@ -43,11 +51,11 @@ func (t Time) Value() (driver.Value, error) {
 	}
 }
 
-func (t *Time) IsNull() bool {
+func (t Time) IsNull() bool {
 	return t.Valid == false
 }
 
-func (t *Time) ElaspedTime() string {
+func (t Time) ElaspedTime() string {
 	if t.IsNull() {
 		return ""
 	}
@@ -76,11 +84,11 @@ func (t *Time) ElaspedTime() string {
 	}
 }
 
-func (t *Time) String() string {
+func (t Time) String() string {
 	return t.Time.Format(time.RFC3339)
 }
 
-func (t *Time) MarshalJSON() ([]byte, error) {
+func (t Time) MarshalJSON() ([]byte, error) {
 	if t.IsNull() {
 		return []byte("null"), nil
 	} else {

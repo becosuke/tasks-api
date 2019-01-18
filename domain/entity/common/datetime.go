@@ -11,11 +11,11 @@ type Datetime struct {
 	Time
 }
 
-func (t *Datetime) String() string {
-	return t.Time.Format(DateFormat)
+func (t Datetime) String() string {
+	return t.Time.Format(DatetimeFormat)
 }
 
-func (t *Datetime) MarshalJSON() ([]byte, error) {
+func (t Datetime) MarshalJSON() ([]byte, error) {
 	if t.IsNull() {
 		return []byte("null"), nil
 	} else {

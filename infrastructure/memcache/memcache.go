@@ -35,10 +35,14 @@ func (c connection) Get(k string) ([]byte, error) {
 	return value, err
 }
 
-func (c connection) Set(k string, v []byte, e int32) {
-	c.client.Set(&memcache.Item{
+func (c connection) Set(k string, v []byte, e int32) error {
+	return c.client.Set(&memcache.Item{
 		Key:        k,
 		Value:      v,
 		Expiration: e,
 	})
+}
+
+func (c connection) Delete(k string) error {
+	return c.client.Delete(k)
 }

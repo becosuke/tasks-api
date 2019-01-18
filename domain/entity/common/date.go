@@ -11,11 +11,11 @@ type Date struct {
 	Time
 }
 
-func (t *Date) String() string {
+func (t Date) String() string {
 	return t.Time.Format(DateFormat)
 }
 
-func (t *Date) MarshalJSON() ([]byte, error) {
+func (t Date) MarshalJSON() ([]byte, error) {
 	if t.IsNull() {
 		return []byte("null"), nil
 	} else {

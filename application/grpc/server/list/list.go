@@ -65,3 +65,30 @@ func (s *Server) GetCountAll(ctx context.Context, request *common.Empty) (*commo
 		return &common.Count{Count: res}, nil
 	}
 }
+
+func (s *Server) Create(ctx context.Context, request *list.CreateRequest) (*list.Document, error) {
+	if val, err := service.Create(request.Title); err != nil {
+		log.Printf("%+v", err)
+		return nil, err
+	} else {
+		return val.Message(), nil
+	}
+}
+
+func (s *Server) Update(ctx context.Context, request *list.UpdateRequest) (*list.Document, error) {
+	if val, err := service.Update(request.Id, request.Title); err != nil {
+		log.Printf("%+v", err)
+		return nil, err
+	} else {
+		return val.Message(), nil
+	}
+}
+
+func (s *Server) Delete(ctx context.Context, request *list.DeleteRequest) (*list.Document, error) {
+	if val, err := service.Delete(request.Id); err != nil {
+		log.Printf("%+v", err)
+		return nil, err
+	} else {
+		return val.Message(), nil
+	}
+}

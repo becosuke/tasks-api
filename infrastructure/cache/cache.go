@@ -36,6 +36,15 @@ func getCachedAt(key string, expire int32) int64 {
 	return cachedAt
 }
 
+func deleteCachedAt(key string) {
+	cacheKey := fmt.Sprintf("%s_cached_at", key)
+
+	dictLocalCache.Delete(cacheKey)
+
+	mc := memcache.Open()
+	mc.Delete(cacheKey)
+}
+
 func GetLocalCache(key string, expire int32) (interface{}, bool) {
 	cachedAt := getCachedAt(key, expire)
 
@@ -57,38 +66,12 @@ func SetLocalCache(key string, data interface{}) {
 	dictLocalCache.Store(key, entry)
 }
 
-func GetSharedCache(key string) (interface{}, bool) {
-	conf := config.GetConfig()
-
-	var data interface{}
-	entry, ok := dictSharedCache.Load(key)
-	if ok == false || conf.NowTimestamp-entry.(common.Cache).CachedAt > common.CACHE_EXPIRE_LOCAL {
-		mc := memcache.Open()
-		var tmp []byte
-		var mcError, decError error
-		tmp, mcError = mc.Get(key)
-		if mcError != nil {
-			return nil, false
-		}
-		buf := bytes.NewBuffer(tmp)
-		decError = gob.NewDecoder(buf).Decode(&data)
-		if decError != nil {
-			return nil, false
-		}
-
-		entry = common.Cache{
-			CachedData: data,
-			CachedAt:   conf.NowTimestamp,
-		}
-		dictSharedCache.Store(key, entry)
-
-		return data, true
-	} else {
-		return entry.(common.Cache).CachedData, true
-	}
+func DeleteLocalCache(key string) {
+	dictLocalCache.Delete(key)
+	deleteCachedAt(key)
 }
 
-func GetSharedCache2(key string) (interface{}, bool) {
+func GetSharedCache(key string) (interface{}, bool) {
 	conf := config.GetConfig()
 
 	var data interface{}
