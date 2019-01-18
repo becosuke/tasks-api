@@ -10,11 +10,14 @@ import (
 const Table = "task"
 const Database = "tasks"
 const PrimaryKey = "id"
+const RelationalKey = "list_id"
 
 const EntityCacheKey = "task_entity_%d"
 const DocumentCacheKey = "task_document_%d"
-const KeyAllCacheKey = "task_key_all_%d_%d"
+const KeyAllCacheKey = "task_key_all_%d_%d" // limit, offset
 const CountAllCacheKey = "task_count_all"
+const KeyRelationalCacheKey = "task_key_relational_%d_%d_%d" // listId, limit, offset
+const CountRelationalCacheKey = "task_count_relational_%d"   // listId
 
 func GetEntityCacheKey(id uint64) string {
 	return fmt.Sprintf(EntityCacheKey, id)
@@ -25,15 +28,24 @@ func GetDocumentCacheKey(id uint64) string {
 }
 
 func GetKeyAllCacheKey(limit int32, offset int32) string {
-	return KeyAllCacheKey
+	return fmt.Sprintf(KeyAllCacheKey, limit, offset)
 }
 
 func GetCountAllCacheKey() string {
 	return CountAllCacheKey
 }
 
+func GetKeyRelationalCacheKey(listId uint64, limit int32, offset int32) string {
+	return fmt.Sprintf(KeyRelationalCacheKey, listId, limit, offset)
+}
+
+func GetCountRelationalCacheKey(listId uint64) string {
+	return fmt.Sprintf(CountRelationalCacheKey, listId)
+}
+
 type Entity struct {
 	ID          uint64          `db:"id"`
+	ListId      uint64          `db:"list_id"`
 	Title       string          `db:"title"`
 	CreatedAt   common.Datetime `db:"created_at"`
 	UpdatedAt   common.Datetime `db:"updated_at"`

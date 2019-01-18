@@ -9,17 +9,14 @@ func Document(val *entity.Entity) *entity.Document {
 		return &entity.Document{}
 	}
 
-	var enabled bool
-	if val.DeletedAt.IsNull() {
-		enabled = true
-	} else {
-		enabled = false
-	}
-
 	res := &entity.Document{
-		Id:      val.ID,
-		Title:   val.Title,
-		Enabled: enabled,
+		Id:        val.ID,
+		ListId:    val.ListId,
+		Title:     val.Title,
+		Enabled:   val.Valid(),
+		CreatedAt: val.CreatedAt.Unix(),
+		UpdatedAt: val.UpdatedAt.Unix(),
+		DeletedAt: val.DeletedAt.Unix(),
 	}
 
 	return res

@@ -18,6 +18,33 @@ func Register(grpcServer *grpc.Server) {
 	stub.RegisterListServer(grpcServer, &Server{})
 }
 
+func (s *Server) Create(ctx context.Context, request *list.CreateRequest) (*list.Document, error) {
+	if val, err := service.Create(request.Title); err != nil {
+		log.Printf("%+v", err)
+		return nil, err
+	} else {
+		return val.Message(), nil
+	}
+}
+
+func (s *Server) Update(ctx context.Context, request *list.UpdateRequest) (*list.Document, error) {
+	if val, err := service.Update(request.Id, request.Title); err != nil {
+		log.Printf("%+v", err)
+		return nil, err
+	} else {
+		return val.Message(), nil
+	}
+}
+
+func (s *Server) Delete(ctx context.Context, request *list.DeleteRequest) (*list.Document, error) {
+	if val, err := service.Delete(request.Id); err != nil {
+		log.Printf("%+v", err)
+		return nil, err
+	} else {
+		return val.Message(), nil
+	}
+}
+
 func (s *Server) GetDocument(ctx context.Context, request *common.Id) (*list.Document, error) {
 	if val, err := service.GetDocument(request.Id); err != nil {
 		log.Printf("%+v", err)
@@ -58,34 +85,7 @@ func (s *Server) GetDocumentsAll(request *common.Pagination, stream stub.List_Ge
 }
 
 func (s *Server) GetCountAll(ctx context.Context, request *common.Empty) (*common.Count, error) {
-	if res, err := service.GetCountAll(); err != nil {
-		log.Printf("%+v", err)
-		return nil, err
-	} else {
-		return &common.Count{Count: res}, nil
-	}
-}
-
-func (s *Server) Create(ctx context.Context, request *list.CreateRequest) (*list.Document, error) {
-	if val, err := service.Create(request.Title); err != nil {
-		log.Printf("%+v", err)
-		return nil, err
-	} else {
-		return val.Message(), nil
-	}
-}
-
-func (s *Server) Update(ctx context.Context, request *list.UpdateRequest) (*list.Document, error) {
-	if val, err := service.Update(request.Id, request.Title); err != nil {
-		log.Printf("%+v", err)
-		return nil, err
-	} else {
-		return val.Message(), nil
-	}
-}
-
-func (s *Server) Delete(ctx context.Context, request *list.DeleteRequest) (*list.Document, error) {
-	if val, err := service.Delete(request.Id); err != nil {
+	if val, err := service.GetCountAll(); err != nil {
 		log.Printf("%+v", err)
 		return nil, err
 	} else {
