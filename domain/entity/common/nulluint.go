@@ -13,6 +13,7 @@ func (n *NullUint) MarshalJSON() ([]byte, error) {
 	if n.Valid == false {
 		return []byte("null"), nil
 	}
+
 	return json.Marshal(n.Uint())
 }
 
@@ -23,7 +24,7 @@ func (n *NullUint) IsNull() bool {
 func (n *NullUint) Uint() uint {
 	if n.IsNull() {
 		return 0
-	} else {
-		return uint(n.NullInt64.Int64)
 	}
+
+	return uint(n.NullInt64.Int64)
 }

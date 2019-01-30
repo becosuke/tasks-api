@@ -6,12 +6,12 @@ import (
 	repository "github.com/becosuke/tasks-api/domain/repository/task"
 )
 
-func Create(listId uint64, title string) (*entity.Document, error) {
-	return repository.Create(listId, title)
+func Create(listID uint64, title string) (*entity.Document, error) {
+	return repository.Create(listID, title)
 }
 
-func Update(id uint64, listId uint64, title string) (*entity.Document, error) {
-	return repository.Update(id, listId, title)
+func Update(id uint64, listID uint64, title string) (*entity.Document, error) {
+	return repository.Update(id, listID, title)
 }
 
 func Delete(id uint64) (*entity.Document, error) {
@@ -34,10 +34,10 @@ func GetCountAll() (*common.Count, error) {
 	return repository.FetchCountAll()
 }
 
-func GetDocumentsByList(listId uint64, limit int32, offset int32) ([]*entity.Document, error) {
-	return repository.FetchDocumentsByRelationalKey(listId, limit, offset)
+func GetDocumentsByList(listID uint64, limit int32, offset int32) ([]*entity.Document, error) {
+	return repository.FetchDocumentsByRelationalKey(listID, limit, offset)
 }
 
-func GetCountByList(listId uint64) (*common.Count, error) {
-	return repository.FetchCountByRelationalKey(listId)
+func GetCountByList(listID uint64) (*common.Count, error) {
+	return repository.FetchCountByRelationalKey(listID)
 }

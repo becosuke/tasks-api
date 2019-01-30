@@ -43,9 +43,9 @@ type Entity struct {
 func (val *Entity) Valid() bool {
 	if val != nil && val.DeletedAt.IsNull() {
 		return true
-	} else {
-		return false
 	}
+
+	return false
 }
 
 type Document message.Document
@@ -53,16 +53,16 @@ type Document message.Document
 func (val *Document) Valid() bool {
 	if val != nil && val.Enabled == true {
 		return true
-	} else {
-		return false
 	}
+
+	return false
 }
 
 func (val *Document) Message() *message.Document {
 	if val.Valid() {
 		res := message.Document(*val)
 		return &res
-	} else {
-		return &message.Document{}
 	}
+
+	return &message.Document{}
 }

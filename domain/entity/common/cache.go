@@ -1,12 +1,12 @@
 package common
 
-const CACHE_EXPIRE_ONE_MINUTE = 60
-const CACHE_EXPIRE_HALF_HOUR = 1800
-const CACHE_EXPIRE_ONE_HOUR = 3600
-const CACHE_EXPIRE_ONE_THIRD_DAY = 28800
-const CACHE_EXPIRE_HALF_DAY = 43200
-const CACHE_EXPIRE_DEFAULT = CACHE_EXPIRE_HALF_HOUR
-const CACHE_EXPIRE_LOCAL = CACHE_EXPIRE_ONE_MINUTE
+const CacheExpireOneMinute = 60
+const CacheExpireHalfHour = 1800
+const CacheExpireOneHour = 3600
+const CacheExpireOneThirdDay = 28800
+const CacheExpireHalfDay = 43200
+const CacheExpireDefault = CacheExpireHalfHour
+const CacheExpireLocal = CacheExpireOneMinute
 
 type Cache struct {
 	CachedData interface{}

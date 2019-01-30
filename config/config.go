@@ -113,10 +113,10 @@ func GetConfig() *Config {
 			memcachePort = 11211
 		}
 
-		memcacheUrl := make([]string, 0, len(memcacheHost))
+		memcacheURL := make([]string, 0, len(memcacheHost))
 		for _, val := range memcacheHost {
-			memcacheUrlTmp := fmt.Sprintf("%s:%d", val, memcachePort)
-			memcacheUrl = append(memcacheUrl, memcacheUrlTmp)
+			memcacheURLTmp := fmt.Sprintf("%s:%d", val, memcachePort)
+			memcacheURL = append(memcacheURL, memcacheURLTmp)
 		}
 
 		var databaseUser string
@@ -144,10 +144,10 @@ func GetConfig() *Config {
 			databasePort = 3306
 		}
 
-		databaseUrlMaster := make([]string, 0, len(databaseHostMaster))
+		databaseURLMaster := make([]string, 0, len(databaseHostMaster))
 		for _, val := range databaseHostMaster {
-			databaseUrlMaster = append(
-				databaseUrlMaster,
+			databaseURLMaster = append(
+				databaseURLMaster,
 				fmt.Sprintf(
 					"%s:%s@tcp(%s:%d)/%%s?charset=utf8mb4&parseTime=true&loc=%s",
 					databaseUser,
@@ -159,10 +159,10 @@ func GetConfig() *Config {
 			)
 		}
 
-		databaseUrlSlave := make([]string, 0, len(databaseHostSlave))
+		databaseURLSlave := make([]string, 0, len(databaseHostSlave))
 		for _, val := range databaseHostSlave {
-			databaseUrlSlave = append(
-				databaseUrlSlave,
+			databaseURLSlave = append(
+				databaseURLSlave,
 				fmt.Sprintf(
 					"%s:%s@tcp(%s:%d)/%%s?charset=utf8mb4&parseTime=true&loc=%s",
 					databaseUser,
@@ -176,7 +176,7 @@ func GetConfig() *Config {
 
 		var grpcHost string
 		if grpcHost = os.Getenv("TASKS_GRPC_HOST"); grpcHost == "" {
-			grpcHost = "127.0.0.1"
+			grpcHost = "0.0.0.0"
 		}
 
 		var grpcPort int
@@ -201,21 +201,21 @@ func GetConfig() *Config {
 			Memcache: Memcache{
 				Host: memcacheHost,
 				Port: memcachePort,
-				URL:  memcacheUrl,
+				URL:  memcacheURL,
 			},
 			DatabaseMaster: Database{
 				User: databaseUser,
 				Pass: databasePass,
 				Host: databaseHostMaster,
 				Port: databasePort,
-				URL:  databaseUrlMaster,
+				URL:  databaseURLMaster,
 			},
 			DatabaseSlave: Database{
 				User: databaseUser,
 				Pass: databasePass,
 				Host: databaseHostSlave,
 				Port: databasePort,
-				URL:  databaseUrlSlave,
+				URL:  databaseURLSlave,
 			},
 			GrpcHost: grpcHost,
 			GrpcPort: grpcPort,

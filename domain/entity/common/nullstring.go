@@ -13,6 +13,7 @@ func (n *NullString) MarshalJSON() ([]byte, error) {
 	if n.Valid == false {
 		return []byte("null"), nil
 	}
+
 	return json.Marshal(n.String())
 }
 
@@ -23,7 +24,7 @@ func (n *NullString) IsNull() bool {
 func (n *NullString) String() string {
 	if n.IsNull() {
 		return ""
-	} else {
-		return n.NullString.String
 	}
+
+	return n.NullString.String
 }

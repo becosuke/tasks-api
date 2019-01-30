@@ -13,7 +13,7 @@ func FetchEntity(id uint64) (*entity.Entity, error) {
 
 	var res *entity.Entity
 	cacheKey := entity.GetEntityCacheKey(id)
-	if cached, ok := cache.GetLocalCache(cacheKey, common.CACHE_EXPIRE_DEFAULT); ok == false {
+	if cached, ok := cache.GetLocalCache(cacheKey, common.CacheExpireDefault); ok == false {
 		if res, err = database.FindOne(id); err != nil || res.Valid() == false {
 			return nil, err
 		}
@@ -77,7 +77,7 @@ func FetchDocument(id uint64) (*entity.Document, error) {
 	var val *entity.Entity
 	var res *entity.Document
 	cacheKey := entity.GetDocumentCacheKey(id)
-	if cached, ok := cache.GetLocalCache(cacheKey, common.CACHE_EXPIRE_DEFAULT); ok == false {
+	if cached, ok := cache.GetLocalCache(cacheKey, common.CacheExpireDefault); ok == false {
 		if val, err = FetchEntity(id); err != nil || val.Valid() == false {
 			return &entity.Document{}, err
 		}
@@ -114,7 +114,7 @@ func FetchDocumentsAll(limit int32, offset int32) ([]*entity.Document, error) {
 			return make([]*entity.Document, 0), err
 		}
 
-		cache.SetSharedCache(cacheKey, ids, common.CACHE_EXPIRE_DEFAULT)
+		cache.SetSharedCache(cacheKey, ids, common.CacheExpireDefault)
 	} else {
 		if ids = cached.([]uint64); ids == nil {
 			ids = make([]uint64, 0)
@@ -134,7 +134,7 @@ func CountAll() (uint64, error) {
 			return 0, err
 		}
 
-		cache.SetSharedCache(cacheKey, res, common.CACHE_EXPIRE_DEFAULT)
+		cache.SetSharedCache(cacheKey, res, common.CacheExpireDefault)
 	} else {
 		res = cached.(uint64)
 	}

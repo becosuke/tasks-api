@@ -13,7 +13,7 @@ import (
 )
 
 var EpochTime = time.Unix(0, 0)
-var EpochTimestamp int64 = 0
+var EpochTimestamp int64
 
 type Time struct {
 	time.Time
@@ -38,17 +38,17 @@ func (t *Time) Scan(value interface{}) (err error) {
 func (t Time) Unix() int64 {
 	if t.IsNull() {
 		return EpochTimestamp
-	} else {
-		return t.Time.Unix()
 	}
+
+	return t.Time.Unix()
 }
 
 func (t Time) Value() (driver.Value, error) {
 	if t.IsNull() {
 		return nil, nil
-	} else {
-		return t.Time.String(), nil
 	}
+
+	return t.Time.String(), nil
 }
 
 func (t Time) IsNull() bool {
@@ -67,21 +67,24 @@ func (t Time) ElaspedTime() string {
 		elasped = 0
 	}
 
+	var res string
 	if elasped < 86400 {
 		var hour int64 = 3600
 		var min int64 = 60
 		if elasped == 0 {
-			return "たった今"
+			res = "たった今"
 		} else if elasped < min {
-			return fmt.Sprintf("%d秒前", elasped)
+			res = fmt.Sprintf("%d秒前", elasped)
 		} else if elasped < hour {
-			return fmt.Sprintf("%d分前", elasped/min)
+			res = fmt.Sprintf("%d分前", elasped/min)
 		} else {
-			return fmt.Sprintf("%d時間前", elasped/hour)
+			res = fmt.Sprintf("%d時間前", elasped/hour)
 		}
 	} else {
-		return t.Time.Format("2006年1月2日")
+		res = t.Time.Format("2006年1月2日")
 	}
+
+	return res
 }
 
 func (t Time) String() string {
@@ -91,7 +94,7 @@ func (t Time) String() string {
 func (t Time) MarshalJSON() ([]byte, error) {
 	if t.IsNull() {
 		return []byte("null"), nil
-	} else {
-		return json.Marshal(t.Time.Unix())
 	}
+
+	return json.Marshal(t.Time.Unix())
 }

@@ -61,7 +61,7 @@ func CountAll() (uint64, error) {
 	defer stmt.Close()
 
 	var res uint64
-	if err = stmt.Get(&res, common.DELETED_STATUS_ALIVE); err != nil {
+	if err = stmt.Get(&res, common.DeletedStatusAlive); err != nil {
 		return 0, errors.WithStack(err)
 	}
 
@@ -86,7 +86,7 @@ func FindPrimaryKeyAll(limit int32, offset int32) ([]uint64, error) {
 	defer stmt.Close()
 
 	var res []uint64
-	if err = stmt.Select(&res, common.DELETED_STATUS_ALIVE, limit, offset); err != nil {
+	if err = stmt.Select(&res, common.DeletedStatusAlive, limit, offset); err != nil {
 		switch {
 		case err == sql.ErrNoRows:
 			return make([]uint64, 0), nil

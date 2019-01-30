@@ -18,9 +18,9 @@ func (t Datetime) String() string {
 func (t Datetime) MarshalJSON() ([]byte, error) {
 	if t.IsNull() {
 		return []byte("null"), nil
-	} else {
-		return json.Marshal(t.String())
 	}
+
+	return json.Marshal(t.String())
 }
 
 func NewDatetime(t time.Time) Datetime {

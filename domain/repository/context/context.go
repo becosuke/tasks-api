@@ -13,7 +13,7 @@ func FetchEntity(id uint64) (*entity.Entity, error) {
 
 	var res *entity.Entity
 	cacheKey := entity.GetEntityCacheKey(id)
-	if cached, ok := cache.GetLocalCache(cacheKey, common.CACHE_EXPIRE_DEFAULT); ok == false {
+	if cached, ok := cache.GetLocalCache(cacheKey, common.CacheExpireDefault); ok == false {
 		if res, err = database.FindOne(id); err != nil || res.Valid() == false {
 			return nil, err
 		}
@@ -32,7 +32,7 @@ func FetchDocument(id uint64) (*entity.Document, error) {
 	var val *entity.Entity
 	var res *entity.Document
 	cacheKey := entity.GetDocumentCacheKey(id)
-	if cached, ok := cache.GetLocalCache(cacheKey, common.CACHE_EXPIRE_DEFAULT); ok == false {
+	if cached, ok := cache.GetLocalCache(cacheKey, common.CacheExpireDefault); ok == false {
 		if val, err = FetchEntity(id); err != nil || val.Valid() == false {
 			return &entity.Document{}, err
 		}
@@ -59,6 +59,26 @@ func FetchDocuments(ids []uint64) ([]*entity.Document, error) {
 	return res, nil
 }
 
+func FetchDocumentsAll(limit int32, offset int32) ([]*entity.Document, error) {
+	var err error
+
+	ids := make([]uint64, 0)
+	cacheKey := entity.GetKeyAllCacheKey(limit, offset)
+	if cached, ok := cache.GetSharedCache(cacheKey); ok == false {
+		if ids, err = database.FindPrimaryKeyAll(limit, offset); err != nil {
+			return make([]*entity.Document, 0), err
+		}
+
+		cache.SetSharedCache(cacheKey, ids, common.CacheExpireDefault)
+	} else {
+		if ids = cached.([]uint64); ids == nil {
+			ids = make([]uint64, 0)
+		}
+	}
+
+	return FetchDocuments(ids)
+}
+
 func CountAll() (uint64, error) {
 	var err error
 
@@ -69,7 +89,7 @@ func CountAll() (uint64, error) {
 			return 0, err
 		}
 
-		cache.SetSharedCache(cacheKey, res, common.CACHE_EXPIRE_DEFAULT)
+		cache.SetSharedCache(cacheKey, res, common.CacheExpireDefault)
 	} else {
 		res = cached.(uint64)
 	}
@@ -77,22 +97,11 @@ func CountAll() (uint64, error) {
 	return res, nil
 }
 
-func FetchAll(limit int32, offset int32) ([]*entity.Document, error) {
-	var err error
-
-	ids := make([]uint64, 0)
-	cacheKey := entity.GetKeyAllCacheKey(limit, offset)
-	if cached, ok := cache.GetSharedCache(cacheKey); ok == false {
-		if ids, err = database.FindPrimaryKeyAll(limit, offset); err != nil {
-			return make([]*entity.Document, 0), err
-		}
-
-		cache.SetSharedCache(cacheKey, ids, common.CACHE_EXPIRE_DEFAULT)
-	} else {
-		if ids = cached.([]uint64); ids == nil {
-			ids = make([]uint64, 0)
-		}
+func FetchCountAll() (*common.Count, error) {
+	count, err := CountAll()
+	if err != nil {
+		return &common.Count{}, err
 	}
 
-	return FetchDocuments(ids)
+	return common.NewCount(count), nil
 }

@@ -18,9 +18,9 @@ func (t Date) String() string {
 func (t Date) MarshalJSON() ([]byte, error) {
 	if t.IsNull() {
 		return []byte("null"), nil
-	} else {
-		return json.Marshal(t.String())
 	}
+
+	return json.Marshal(t.String())
 }
 
 func NewDate(t time.Time) Date {

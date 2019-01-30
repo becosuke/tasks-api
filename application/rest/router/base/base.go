@@ -82,7 +82,7 @@ func headerMatcher(headerName string) (string, bool) {
 	mdName := "x-device-type"
 	if headerName == "X-Device-Type" {
 		return mdName, true
-	} else {
-		return mdName, false
 	}
+
+	return mdName, false
 }

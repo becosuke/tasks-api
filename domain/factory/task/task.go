@@ -11,7 +11,7 @@ func Document(val *entity.Entity) *entity.Document {
 
 	res := &entity.Document{
 		Id:        val.ID,
-		ListId:    val.ListId,
+		ListId:    val.ListID,
 		Title:     val.Title,
 		Enabled:   val.Valid(),
 		CreatedAt: val.CreatedAt.Unix(),

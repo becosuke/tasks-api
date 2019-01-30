@@ -1,5 +1,5 @@
 package common
 
-const FORMAT_TYPE_COMPLETE = 1
-const FORMAT_TYPE_COMPACT = 2
-const FORMAT_TYPE_MINIMUM = 3
+const FormatTypeComplete = 1
+const FormatTypeCompact = 2
+const FormatTypeMinimum = 3

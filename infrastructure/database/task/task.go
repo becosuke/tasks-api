@@ -40,7 +40,7 @@ func FindOne(id uint64) (*entity.Entity, error) {
 	return res, nil
 }
 
-func Create(listId uint64, title string) (*entity.Entity, error) {
+func Create(listID uint64, title string) (*entity.Entity, error) {
 	conf := config.GetConfig()
 	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
 	if err != nil {
@@ -56,7 +56,7 @@ func Create(listId uint64, title string) (*entity.Entity, error) {
 	defer stmt.Close()
 
 	now := common.NewDatetime(conf.NowDatetime)
-	result, err := stmt.Exec(listId, title, now.String(), now.String())
+	result, err := stmt.Exec(listID, title, now.String(), now.String())
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -68,7 +68,7 @@ func Create(listId uint64, title string) (*entity.Entity, error) {
 
 	res := &entity.Entity{
 		ID:        uint64(id),
-		ListId:    listId,
+		ListID:    listID,
 		Title:     title,
 		CreatedAt: now,
 		UpdatedAt: now,
@@ -77,7 +77,7 @@ func Create(listId uint64, title string) (*entity.Entity, error) {
 	return res, nil
 }
 
-func Update(id uint64, listId uint64, title string) (*entity.Entity, error) {
+func Update(id uint64, listID uint64, title string) (*entity.Entity, error) {
 	conf := config.GetConfig()
 	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
 	if err != nil {
@@ -98,11 +98,11 @@ func Update(id uint64, listId uint64, title string) (*entity.Entity, error) {
 	defer stmt.Close()
 
 	now := common.NewDatetime(conf.NowDatetime)
-	if _, err = stmt.Exec(listId, title, now.String(), id); err != nil {
+	if _, err = stmt.Exec(listID, title, now.String(), id); err != nil {
 		return nil, errors.WithStack(err)
 	}
 
-	res.ListId = listId
+	res.ListID = listID
 	res.Title = title
 	res.UpdatedAt = now
 
@@ -190,7 +190,7 @@ func CountAll() (uint64, error) {
 	return res, nil
 }
 
-func FindPrimaryKeyByRelationalKey(listId uint64, limit int32, offset int32) ([]uint64, error) {
+func FindPrimaryKeyByRelationalKey(listID uint64, limit int32, offset int32) ([]uint64, error) {
 	var err error
 
 	conf := config.GetConfig()
@@ -208,7 +208,7 @@ func FindPrimaryKeyByRelationalKey(listId uint64, limit int32, offset int32) ([]
 	defer stmt.Close()
 
 	var res []uint64
-	if err = stmt.Select(&res, listId, limit, offset); err != nil {
+	if err = stmt.Select(&res, listID, limit, offset); err != nil {
 		switch {
 		case err == sql.ErrNoRows:
 			return make([]uint64, 0), nil
@@ -220,7 +220,7 @@ func FindPrimaryKeyByRelationalKey(listId uint64, limit int32, offset int32) ([]
 	return res, nil
 }
 
-func CountByRelationalKey(listId uint64) (uint64, error) {
+func CountByRelationalKey(listID uint64) (uint64, error) {
 	conf := config.GetConfig()
 	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
 	if err != nil {
@@ -236,7 +236,7 @@ func CountByRelationalKey(listId uint64) (uint64, error) {
 	defer stmt.Close()
 
 	var res uint64
-	if err = stmt.Get(&res, listId); err != nil {
+	if err = stmt.Get(&res, listID); err != nil {
 		return 0, errors.WithStack(err)
 	}
 

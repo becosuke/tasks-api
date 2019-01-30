@@ -79,7 +79,7 @@ func TestGetDocument(t *testing.T) {
 
 func TestCreate(t *testing.T) {
 	conf := config.GetConfig()
-	if conf.TasksEnv == common.ENV_PRODUCTION {
+	if conf.TasksEnv == common.EnvProduction {
 		t.Log("skip test")
 		return
 	}
@@ -103,7 +103,7 @@ func TestCreate(t *testing.T) {
 
 func createDocument() (*message.Document, error) {
 	conf := config.GetConfig()
-	if conf.TasksEnv == common.ENV_PRODUCTION {
+	if conf.TasksEnv == common.EnvProduction {
 		return nil, errors.New("skip test")
 	}
 
@@ -132,7 +132,7 @@ func createDocument() (*message.Document, error) {
 
 func TestUpdate(t *testing.T) {
 	conf := config.GetConfig()
-	if conf.TasksEnv == common.ENV_PRODUCTION {
+	if conf.TasksEnv == common.EnvProduction {
 		t.Log("skip test")
 		return
 	}
@@ -161,7 +161,7 @@ func TestUpdate(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	conf := config.GetConfig()
-	if conf.TasksEnv == common.ENV_PRODUCTION {
+	if conf.TasksEnv == common.EnvProduction {
 		t.Log("skip test")
 		return
 	}

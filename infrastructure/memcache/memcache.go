@@ -6,6 +6,12 @@ import (
 	"sync"
 )
 
+type Connection interface {
+	Get(k string) ([]byte, error)
+	Set(k string, v []byte, e int32) error
+	Delete(k string) error
+}
+
 type connection struct {
 	client *memcache.Client
 	once   sync.Once
@@ -13,7 +19,7 @@ type connection struct {
 
 var conn = connection{}
 
-func Open() connection {
+func Open() Connection {
 	conn.once.Do(func() {
 		conf := config.GetConfig()
 		client := memcache.New(conf.Memcache.URL...)

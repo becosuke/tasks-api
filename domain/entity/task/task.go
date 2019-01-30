@@ -16,8 +16,8 @@ const EntityCacheKey = "task_entity_%d"
 const DocumentCacheKey = "task_document_%d"
 const KeyAllCacheKey = "task_key_all_%d_%d" // limit, offset
 const CountAllCacheKey = "task_count_all"
-const KeyRelationalCacheKey = "task_key_relational_%d_%d_%d" // listId, limit, offset
-const CountRelationalCacheKey = "task_count_relational_%d"   // listId
+const KeyRelationalCacheKey = "task_key_relational_%d_%d_%d" // listID, limit, offset
+const CountRelationalCacheKey = "task_count_relational_%d"   // listID
 
 func GetEntityCacheKey(id uint64) string {
 	return fmt.Sprintf(EntityCacheKey, id)
@@ -35,17 +35,17 @@ func GetCountAllCacheKey() string {
 	return CountAllCacheKey
 }
 
-func GetKeyRelationalCacheKey(listId uint64, limit int32, offset int32) string {
-	return fmt.Sprintf(KeyRelationalCacheKey, listId, limit, offset)
+func GetKeyRelationalCacheKey(listID uint64, limit int32, offset int32) string {
+	return fmt.Sprintf(KeyRelationalCacheKey, listID, limit, offset)
 }
 
-func GetCountRelationalCacheKey(listId uint64) string {
-	return fmt.Sprintf(CountRelationalCacheKey, listId)
+func GetCountRelationalCacheKey(listID uint64) string {
+	return fmt.Sprintf(CountRelationalCacheKey, listID)
 }
 
 type Entity struct {
 	ID          uint64          `db:"id"`
-	ListId      uint64          `db:"list_id"`
+	ListID      uint64          `db:"list_id"`
 	Title       string          `db:"title"`
 	CreatedAt   common.Datetime `db:"created_at"`
 	UpdatedAt   common.Datetime `db:"updated_at"`
@@ -56,9 +56,9 @@ type Entity struct {
 func (val *Entity) Valid() bool {
 	if val != nil && val.DeletedAt.IsNull() {
 		return true
-	} else {
-		return false
 	}
+
+	return false
 }
 
 type Document message.Document
@@ -66,16 +66,16 @@ type Document message.Document
 func (val *Document) Valid() bool {
 	if val != nil && val.Enabled == true {
 		return true
-	} else {
-		return false
 	}
+
+	return false
 }
 
 func (val *Document) Message() *message.Document {
 	if val.Valid() {
 		res := message.Document(*val)
 		return &res
-	} else {
-		return &message.Document{}
 	}
+
+	return &message.Document{}
 }

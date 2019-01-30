@@ -13,6 +13,7 @@ func (n *NullFloat32) MarshalJSON() ([]byte, error) {
 	if n.Valid == false {
 		return []byte("null"), nil
 	}
+
 	return json.Marshal(n.Float32())
 }
 
@@ -23,7 +24,7 @@ func (n *NullFloat32) IsNull() bool {
 func (n *NullFloat32) Float32() float32 {
 	if n.IsNull() {
 		return 0.0
-	} else {
-		return float32(n.NullFloat64.Float64)
 	}
+
+	return float32(n.NullFloat64.Float64)
 }

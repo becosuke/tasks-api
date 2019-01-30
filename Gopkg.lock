@@ -177,6 +177,7 @@
   input-imports = [
     "github.com/bradfitz/gomemcache/memcache",
     "github.com/go-sql-driver/mysql",
+    "github.com/golang/protobuf/jsonpb",
     "github.com/golang/protobuf/proto",
     "github.com/grpc-ecosystem/grpc-gateway/runtime",
     "github.com/grpc-ecosystem/grpc-gateway/utilities",

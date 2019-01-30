@@ -20,7 +20,7 @@ func getCachedAt(key string, expire int32) int64 {
 
 	var cachedAt int64
 	localCachedAt, ok := dictCachedAt.Load(cacheKey)
-	if ok == false || conf.NowTimestamp-localCachedAt.(int64) > common.CACHE_EXPIRE_LOCAL {
+	if ok == false || conf.NowTimestamp-localCachedAt.(int64) > common.CacheExpireLocal {
 		mc := memcache.Open()
 		if sharedCachedAt, mcError := mc.Get(cacheKey); mcError != nil {
 			cachedAt = conf.NowTimestamp
@@ -51,9 +51,9 @@ func GetLocalCache(key string, expire int32) (interface{}, bool) {
 	entry, ok := dictLocalCache.Load(key)
 	if ok == false || cachedAt > entry.(common.Cache).CachedAt {
 		return nil, false
-	} else {
-		return entry.(common.Cache).CachedData, true
 	}
+
+	return entry.(common.Cache).CachedData, true
 }
 
 func SetLocalCache(key string, data interface{}) {
@@ -76,7 +76,7 @@ func GetSharedCache(key string) (interface{}, bool) {
 
 	var data interface{}
 	entry, ok := dictSharedCache.Load(key)
-	if ok == false || conf.NowTimestamp-entry.(common.Cache).CachedAt > common.CACHE_EXPIRE_LOCAL {
+	if ok == false || conf.NowTimestamp-entry.(common.Cache).CachedAt > common.CacheExpireLocal {
 		mc := memcache.Open()
 		var tmp []byte
 		var mcError, decError error
@@ -97,9 +97,9 @@ func GetSharedCache(key string) (interface{}, bool) {
 		dictSharedCache.Store(key, entry)
 
 		return data, true
-	} else {
-		return entry.(common.Cache).CachedData, true
 	}
+
+	return entry.(common.Cache).CachedData, true
 }
 
 func SetSharedCache(key string, data interface{}, expire int32) {

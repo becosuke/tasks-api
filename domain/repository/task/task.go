@@ -13,7 +13,7 @@ func FetchEntity(id uint64) (*entity.Entity, error) {
 
 	var res *entity.Entity
 	cacheKey := entity.GetEntityCacheKey(id)
-	if cached, ok := cache.GetLocalCache(cacheKey, common.CACHE_EXPIRE_DEFAULT); ok == false {
+	if cached, ok := cache.GetLocalCache(cacheKey, common.CacheExpireDefault); ok == false {
 		if res, err = database.FindOne(id); err != nil || res.Valid() == false {
 			return nil, err
 		}
@@ -26,11 +26,11 @@ func FetchEntity(id uint64) (*entity.Entity, error) {
 	return res, nil
 }
 
-func Create(listId uint64, title string) (*entity.Document, error) {
+func Create(listID uint64, title string) (*entity.Document, error) {
 	var err error
 
 	var val *entity.Entity
-	if val, err = database.Create(listId, title); err != nil {
+	if val, err = database.Create(listID, title); err != nil {
 		return &entity.Document{}, err
 	}
 
@@ -39,11 +39,11 @@ func Create(listId uint64, title string) (*entity.Document, error) {
 	return res, nil
 }
 
-func Update(id uint64, listId uint64, title string) (*entity.Document, error) {
+func Update(id uint64, listID uint64, title string) (*entity.Document, error) {
 	var err error
 
 	var val *entity.Entity
-	if val, err = database.Update(id, listId, title); err != nil {
+	if val, err = database.Update(id, listID, title); err != nil {
 		return &entity.Document{}, err
 	}
 
@@ -77,7 +77,7 @@ func FetchDocument(id uint64) (*entity.Document, error) {
 	var val *entity.Entity
 	var res *entity.Document
 	cacheKey := entity.GetDocumentCacheKey(id)
-	if cached, ok := cache.GetLocalCache(cacheKey, common.CACHE_EXPIRE_DEFAULT); ok == false {
+	if cached, ok := cache.GetLocalCache(cacheKey, common.CacheExpireDefault); ok == false {
 		if val, err = FetchEntity(id); err != nil || val.Valid() == false {
 			return &entity.Document{}, err
 		}
@@ -114,7 +114,7 @@ func FetchDocumentsAll(limit int32, offset int32) ([]*entity.Document, error) {
 			return make([]*entity.Document, 0), err
 		}
 
-		cache.SetSharedCache(cacheKey, ids, common.CACHE_EXPIRE_DEFAULT)
+		cache.SetSharedCache(cacheKey, ids, common.CacheExpireDefault)
 	} else {
 		if ids = cached.([]uint64); ids == nil {
 			ids = make([]uint64, 0)
@@ -134,7 +134,7 @@ func CountAll() (uint64, error) {
 			return 0, err
 		}
 
-		cache.SetSharedCache(cacheKey, res, common.CACHE_EXPIRE_DEFAULT)
+		cache.SetSharedCache(cacheKey, res, common.CacheExpireDefault)
 	} else {
 		res = cached.(uint64)
 	}
@@ -151,17 +151,17 @@ func FetchCountAll() (*common.Count, error) {
 	return common.NewCount(count), nil
 }
 
-func FetchDocumentsByRelationalKey(listId uint64, limit int32, offset int32) ([]*entity.Document, error) {
+func FetchDocumentsByRelationalKey(listID uint64, limit int32, offset int32) ([]*entity.Document, error) {
 	var err error
 
 	ids := make([]uint64, 0)
-	cacheKey := entity.GetKeyRelationalCacheKey(listId, limit, offset)
+	cacheKey := entity.GetKeyRelationalCacheKey(listID, limit, offset)
 	if cached, ok := cache.GetSharedCache(cacheKey); ok == false {
-		if ids, err = database.FindPrimaryKeyByRelationalKey(listId, limit, offset); err != nil {
+		if ids, err = database.FindPrimaryKeyByRelationalKey(listID, limit, offset); err != nil {
 			return make([]*entity.Document, 0), err
 		}
 
-		cache.SetSharedCache(cacheKey, ids, common.CACHE_EXPIRE_DEFAULT)
+		cache.SetSharedCache(cacheKey, ids, common.CacheExpireDefault)
 	} else {
 		if ids = cached.([]uint64); ids == nil {
 			ids = make([]uint64, 0)
@@ -171,17 +171,17 @@ func FetchDocumentsByRelationalKey(listId uint64, limit int32, offset int32) ([]
 	return FetchDocuments(ids)
 }
 
-func CountByRelationalKey(listId uint64) (uint64, error) {
+func CountByRelationalKey(listID uint64) (uint64, error) {
 	var err error
 
 	var res uint64
-	cacheKey := entity.GetCountRelationalCacheKey(listId)
+	cacheKey := entity.GetCountRelationalCacheKey(listID)
 	if cached, ok := cache.GetSharedCache(cacheKey); ok == false {
-		if res, err = database.CountByRelationalKey(listId); err != nil {
+		if res, err = database.CountByRelationalKey(listID); err != nil {
 			return 0, err
 		}
 
-		cache.SetSharedCache(cacheKey, res, common.CACHE_EXPIRE_DEFAULT)
+		cache.SetSharedCache(cacheKey, res, common.CacheExpireDefault)
 	} else {
 		res = cached.(uint64)
 	}
@@ -189,8 +189,8 @@ func CountByRelationalKey(listId uint64) (uint64, error) {
 	return res, nil
 }
 
-func FetchCountByRelationalKey(listId uint64) (*common.Count, error) {
-	count, err := CountByRelationalKey(listId)
+func FetchCountByRelationalKey(listID uint64) (*common.Count, error) {
+	count, err := CountByRelationalKey(listID)
 	if err != nil {
 		return &common.Count{}, err
 	}

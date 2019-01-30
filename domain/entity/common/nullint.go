@@ -14,6 +14,7 @@ func (n *NullInt) MarshalJSON() ([]byte, error) {
 	if n.Valid == false {
 		return []byte("null"), nil
 	}
+
 	return json.Marshal(n.Int())
 }
 
@@ -24,15 +25,15 @@ func (n *NullInt) IsNull() bool {
 func (n *NullInt) Int() int {
 	if n.IsNull() {
 		return 0
-	} else {
-		return int(n.NullInt64.Int64)
 	}
+
+	return int(n.NullInt64.Int64)
 }
 
 func (n *NullInt) String() string {
 	if n.IsNull() {
 		return ""
-	} else {
-		return strconv.FormatInt(n.NullInt64.Int64, 10)
 	}
+
+	return strconv.FormatInt(n.NullInt64.Int64, 10)
 }

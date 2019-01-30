@@ -11,11 +11,12 @@ func Uint64ToBytes(n uint64) []byte {
 
 func BytesToUint64(bs []byte) uint64 {
 	s := string(bs)
-	if n, e := strconv.ParseUint(s, 10, 64); e != nil {
+	n, e := strconv.ParseUint(s, 10, 64)
+	if e != nil {
 		return 0
-	} else {
-		return n
 	}
+
+	return n
 }
 
 func Int64ToBytes(n int64) []byte {
@@ -25,11 +26,12 @@ func Int64ToBytes(n int64) []byte {
 
 func BytesToInt64(bs []byte) int64 {
 	s := string(bs)
-	if n, e := strconv.ParseInt(s, 10, 64); e != nil {
+	n, e := strconv.ParseInt(s, 10, 64)
+	if e != nil {
 		return 0
-	} else {
-		return n
 	}
+
+	return n
 }
 
 func Extract(ns []uint64, limit int32, offset int32) []uint64 {
@@ -43,7 +45,7 @@ func Extract(ns []uint64, limit int32, offset int32) []uint64 {
 
 	if int32(len(ns)) < offset+limit {
 		return ns[offset:]
-	} else {
-		return ns[offset : offset+limit]
 	}
+
+	return ns[offset : offset+limit]
 }
