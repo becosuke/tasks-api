@@ -6,7 +6,6 @@ package task // import "github.com/becosuke/tasks-api/protogen/service/task"
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
-import common "github.com/becosuke/tasks-api/protogen/message/common"
 import task "github.com/becosuke/tasks-api/protogen/message/task"
 import _ "google.golang.org/genproto/googleapis/api/annotations"
 
@@ -26,6 +25,955 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
+type CreateRequest struct {
+	ListId               uint64   `protobuf:"varint,1,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	Title                string   `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateRequest) Reset()         { *m = CreateRequest{} }
+func (m *CreateRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateRequest) ProtoMessage()    {}
+func (*CreateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{0}
+}
+func (m *CreateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateRequest.Unmarshal(m, b)
+}
+func (m *CreateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateRequest.Marshal(b, m, deterministic)
+}
+func (dst *CreateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateRequest.Merge(dst, src)
+}
+func (m *CreateRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateRequest.Size(m)
+}
+func (m *CreateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateRequest proto.InternalMessageInfo
+
+func (m *CreateRequest) GetListId() uint64 {
+	if m != nil {
+		return m.ListId
+	}
+	return 0
+}
+
+func (m *CreateRequest) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+type CreateResponse struct {
+	Document             *task.Document `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *CreateResponse) Reset()         { *m = CreateResponse{} }
+func (m *CreateResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateResponse) ProtoMessage()    {}
+func (*CreateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{1}
+}
+func (m *CreateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateResponse.Unmarshal(m, b)
+}
+func (m *CreateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateResponse.Marshal(b, m, deterministic)
+}
+func (dst *CreateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateResponse.Merge(dst, src)
+}
+func (m *CreateResponse) XXX_Size() int {
+	return xxx_messageInfo_CreateResponse.Size(m)
+}
+func (m *CreateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateResponse proto.InternalMessageInfo
+
+func (m *CreateResponse) GetDocument() *task.Document {
+	if m != nil {
+		return m.Document
+	}
+	return nil
+}
+
+type UpdateRequest struct {
+	Id                   uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	ListId               uint64   `protobuf:"varint,2,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	Title                string   `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateRequest) Reset()         { *m = UpdateRequest{} }
+func (m *UpdateRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateRequest) ProtoMessage()    {}
+func (*UpdateRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{2}
+}
+func (m *UpdateRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateRequest.Unmarshal(m, b)
+}
+func (m *UpdateRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateRequest.Marshal(b, m, deterministic)
+}
+func (dst *UpdateRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateRequest.Merge(dst, src)
+}
+func (m *UpdateRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateRequest.Size(m)
+}
+func (m *UpdateRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateRequest proto.InternalMessageInfo
+
+func (m *UpdateRequest) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+func (m *UpdateRequest) GetListId() uint64 {
+	if m != nil {
+		return m.ListId
+	}
+	return 0
+}
+
+func (m *UpdateRequest) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+type UpdateResponse struct {
+	Document             *task.Document `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *UpdateResponse) Reset()         { *m = UpdateResponse{} }
+func (m *UpdateResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateResponse) ProtoMessage()    {}
+func (*UpdateResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{3}
+}
+func (m *UpdateResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateResponse.Unmarshal(m, b)
+}
+func (m *UpdateResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateResponse.Marshal(b, m, deterministic)
+}
+func (dst *UpdateResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateResponse.Merge(dst, src)
+}
+func (m *UpdateResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdateResponse.Size(m)
+}
+func (m *UpdateResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateResponse proto.InternalMessageInfo
+
+func (m *UpdateResponse) GetDocument() *task.Document {
+	if m != nil {
+		return m.Document
+	}
+	return nil
+}
+
+type DeleteRequest struct {
+	Id                   uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteRequest) Reset()         { *m = DeleteRequest{} }
+func (m *DeleteRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteRequest) ProtoMessage()    {}
+func (*DeleteRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{4}
+}
+func (m *DeleteRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteRequest.Unmarshal(m, b)
+}
+func (m *DeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteRequest.Marshal(b, m, deterministic)
+}
+func (dst *DeleteRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteRequest.Merge(dst, src)
+}
+func (m *DeleteRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteRequest.Size(m)
+}
+func (m *DeleteRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteRequest proto.InternalMessageInfo
+
+func (m *DeleteRequest) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type DeleteResponse struct {
+	Document             *task.Document `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *DeleteResponse) Reset()         { *m = DeleteResponse{} }
+func (m *DeleteResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteResponse) ProtoMessage()    {}
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{5}
+}
+func (m *DeleteResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteResponse.Unmarshal(m, b)
+}
+func (m *DeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteResponse.Marshal(b, m, deterministic)
+}
+func (dst *DeleteResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteResponse.Merge(dst, src)
+}
+func (m *DeleteResponse) XXX_Size() int {
+	return xxx_messageInfo_DeleteResponse.Size(m)
+}
+func (m *DeleteResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteResponse proto.InternalMessageInfo
+
+func (m *DeleteResponse) GetDocument() *task.Document {
+	if m != nil {
+		return m.Document
+	}
+	return nil
+}
+
+type GetDocumentRequest struct {
+	Id                   uint64   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetDocumentRequest) Reset()         { *m = GetDocumentRequest{} }
+func (m *GetDocumentRequest) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentRequest) ProtoMessage()    {}
+func (*GetDocumentRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{6}
+}
+func (m *GetDocumentRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentRequest.Unmarshal(m, b)
+}
+func (m *GetDocumentRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentRequest.Merge(dst, src)
+}
+func (m *GetDocumentRequest) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentRequest.Size(m)
+}
+func (m *GetDocumentRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentRequest proto.InternalMessageInfo
+
+func (m *GetDocumentRequest) GetId() uint64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type GetDocumentResponse struct {
+	Document             *task.Document `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
+	XXX_unrecognized     []byte         `json:"-"`
+	XXX_sizecache        int32          `json:"-"`
+}
+
+func (m *GetDocumentResponse) Reset()         { *m = GetDocumentResponse{} }
+func (m *GetDocumentResponse) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentResponse) ProtoMessage()    {}
+func (*GetDocumentResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{7}
+}
+func (m *GetDocumentResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentResponse.Unmarshal(m, b)
+}
+func (m *GetDocumentResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentResponse.Merge(dst, src)
+}
+func (m *GetDocumentResponse) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentResponse.Size(m)
+}
+func (m *GetDocumentResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentResponse proto.InternalMessageInfo
+
+func (m *GetDocumentResponse) GetDocument() *task.Document {
+	if m != nil {
+		return m.Document
+	}
+	return nil
+}
+
+type GetDocumentsRequest struct {
+	Ids                  []uint64 `protobuf:"varint,1,rep,packed,name=ids,proto3" json:"ids,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetDocumentsRequest) Reset()         { *m = GetDocumentsRequest{} }
+func (m *GetDocumentsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsRequest) ProtoMessage()    {}
+func (*GetDocumentsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{8}
+}
+func (m *GetDocumentsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsRequest.Unmarshal(m, b)
+}
+func (m *GetDocumentsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsRequest.Merge(dst, src)
+}
+func (m *GetDocumentsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsRequest.Size(m)
+}
+func (m *GetDocumentsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsRequest proto.InternalMessageInfo
+
+func (m *GetDocumentsRequest) GetIds() []uint64 {
+	if m != nil {
+		return m.Ids
+	}
+	return nil
+}
+
+type GetDocumentsResponse struct {
+	Documents            []*task.Document `protobuf:"bytes,1,rep,name=documents,proto3" json:"documents,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *GetDocumentsResponse) Reset()         { *m = GetDocumentsResponse{} }
+func (m *GetDocumentsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsResponse) ProtoMessage()    {}
+func (*GetDocumentsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{9}
+}
+func (m *GetDocumentsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsResponse.Unmarshal(m, b)
+}
+func (m *GetDocumentsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsResponse.Merge(dst, src)
+}
+func (m *GetDocumentsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsResponse.Size(m)
+}
+func (m *GetDocumentsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsResponse proto.InternalMessageInfo
+
+func (m *GetDocumentsResponse) GetDocuments() []*task.Document {
+	if m != nil {
+		return m.Documents
+	}
+	return nil
+}
+
+type GetDocumentsAllRequest struct {
+	Limit                int32    `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset               int32    `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetDocumentsAllRequest) Reset()         { *m = GetDocumentsAllRequest{} }
+func (m *GetDocumentsAllRequest) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsAllRequest) ProtoMessage()    {}
+func (*GetDocumentsAllRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{10}
+}
+func (m *GetDocumentsAllRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsAllRequest.Unmarshal(m, b)
+}
+func (m *GetDocumentsAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsAllRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsAllRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsAllRequest.Merge(dst, src)
+}
+func (m *GetDocumentsAllRequest) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsAllRequest.Size(m)
+}
+func (m *GetDocumentsAllRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsAllRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsAllRequest proto.InternalMessageInfo
+
+func (m *GetDocumentsAllRequest) GetLimit() int32 {
+	if m != nil {
+		return m.Limit
+	}
+	return 0
+}
+
+func (m *GetDocumentsAllRequest) GetOffset() int32 {
+	if m != nil {
+		return m.Offset
+	}
+	return 0
+}
+
+type GetDocumentsAllResponse struct {
+	Documents            []*task.Document `protobuf:"bytes,1,rep,name=documents,proto3" json:"documents,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *GetDocumentsAllResponse) Reset()         { *m = GetDocumentsAllResponse{} }
+func (m *GetDocumentsAllResponse) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsAllResponse) ProtoMessage()    {}
+func (*GetDocumentsAllResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{11}
+}
+func (m *GetDocumentsAllResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsAllResponse.Unmarshal(m, b)
+}
+func (m *GetDocumentsAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsAllResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsAllResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsAllResponse.Merge(dst, src)
+}
+func (m *GetDocumentsAllResponse) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsAllResponse.Size(m)
+}
+func (m *GetDocumentsAllResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsAllResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsAllResponse proto.InternalMessageInfo
+
+func (m *GetDocumentsAllResponse) GetDocuments() []*task.Document {
+	if m != nil {
+		return m.Documents
+	}
+	return nil
+}
+
+type GetCountAllRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetCountAllRequest) Reset()         { *m = GetCountAllRequest{} }
+func (m *GetCountAllRequest) String() string { return proto.CompactTextString(m) }
+func (*GetCountAllRequest) ProtoMessage()    {}
+func (*GetCountAllRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{12}
+}
+func (m *GetCountAllRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCountAllRequest.Unmarshal(m, b)
+}
+func (m *GetCountAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCountAllRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetCountAllRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCountAllRequest.Merge(dst, src)
+}
+func (m *GetCountAllRequest) XXX_Size() int {
+	return xxx_messageInfo_GetCountAllRequest.Size(m)
+}
+func (m *GetCountAllRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCountAllRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCountAllRequest proto.InternalMessageInfo
+
+type GetCountAllResponse struct {
+	Count                uint64   `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetCountAllResponse) Reset()         { *m = GetCountAllResponse{} }
+func (m *GetCountAllResponse) String() string { return proto.CompactTextString(m) }
+func (*GetCountAllResponse) ProtoMessage()    {}
+func (*GetCountAllResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{13}
+}
+func (m *GetCountAllResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCountAllResponse.Unmarshal(m, b)
+}
+func (m *GetCountAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCountAllResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetCountAllResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCountAllResponse.Merge(dst, src)
+}
+func (m *GetCountAllResponse) XXX_Size() int {
+	return xxx_messageInfo_GetCountAllResponse.Size(m)
+}
+func (m *GetCountAllResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCountAllResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCountAllResponse proto.InternalMessageInfo
+
+func (m *GetCountAllResponse) GetCount() uint64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+type GetDocumentsByListRequest struct {
+	ListId               uint64   `protobuf:"varint,1,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	Limit                int32    `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset               int32    `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetDocumentsByListRequest) Reset()         { *m = GetDocumentsByListRequest{} }
+func (m *GetDocumentsByListRequest) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsByListRequest) ProtoMessage()    {}
+func (*GetDocumentsByListRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{14}
+}
+func (m *GetDocumentsByListRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsByListRequest.Unmarshal(m, b)
+}
+func (m *GetDocumentsByListRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsByListRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsByListRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsByListRequest.Merge(dst, src)
+}
+func (m *GetDocumentsByListRequest) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsByListRequest.Size(m)
+}
+func (m *GetDocumentsByListRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsByListRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsByListRequest proto.InternalMessageInfo
+
+func (m *GetDocumentsByListRequest) GetListId() uint64 {
+	if m != nil {
+		return m.ListId
+	}
+	return 0
+}
+
+func (m *GetDocumentsByListRequest) GetLimit() int32 {
+	if m != nil {
+		return m.Limit
+	}
+	return 0
+}
+
+func (m *GetDocumentsByListRequest) GetOffset() int32 {
+	if m != nil {
+		return m.Offset
+	}
+	return 0
+}
+
+type GetDocumentsByListResponse struct {
+	Documents            []*task.Document `protobuf:"bytes,1,rep,name=documents,proto3" json:"documents,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *GetDocumentsByListResponse) Reset()         { *m = GetDocumentsByListResponse{} }
+func (m *GetDocumentsByListResponse) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsByListResponse) ProtoMessage()    {}
+func (*GetDocumentsByListResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{15}
+}
+func (m *GetDocumentsByListResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsByListResponse.Unmarshal(m, b)
+}
+func (m *GetDocumentsByListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsByListResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsByListResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsByListResponse.Merge(dst, src)
+}
+func (m *GetDocumentsByListResponse) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsByListResponse.Size(m)
+}
+func (m *GetDocumentsByListResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsByListResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsByListResponse proto.InternalMessageInfo
+
+func (m *GetDocumentsByListResponse) GetDocuments() []*task.Document {
+	if m != nil {
+		return m.Documents
+	}
+	return nil
+}
+
+type GetCountByListRequest struct {
+	ListId               uint64   `protobuf:"varint,1,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetCountByListRequest) Reset()         { *m = GetCountByListRequest{} }
+func (m *GetCountByListRequest) String() string { return proto.CompactTextString(m) }
+func (*GetCountByListRequest) ProtoMessage()    {}
+func (*GetCountByListRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{16}
+}
+func (m *GetCountByListRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCountByListRequest.Unmarshal(m, b)
+}
+func (m *GetCountByListRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCountByListRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetCountByListRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCountByListRequest.Merge(dst, src)
+}
+func (m *GetCountByListRequest) XXX_Size() int {
+	return xxx_messageInfo_GetCountByListRequest.Size(m)
+}
+func (m *GetCountByListRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCountByListRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCountByListRequest proto.InternalMessageInfo
+
+func (m *GetCountByListRequest) GetListId() uint64 {
+	if m != nil {
+		return m.ListId
+	}
+	return 0
+}
+
+type GetCountByListResponse struct {
+	Count                uint64   `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetCountByListResponse) Reset()         { *m = GetCountByListResponse{} }
+func (m *GetCountByListResponse) String() string { return proto.CompactTextString(m) }
+func (*GetCountByListResponse) ProtoMessage()    {}
+func (*GetCountByListResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{17}
+}
+func (m *GetCountByListResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCountByListResponse.Unmarshal(m, b)
+}
+func (m *GetCountByListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCountByListResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetCountByListResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCountByListResponse.Merge(dst, src)
+}
+func (m *GetCountByListResponse) XXX_Size() int {
+	return xxx_messageInfo_GetCountByListResponse.Size(m)
+}
+func (m *GetCountByListResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCountByListResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCountByListResponse proto.InternalMessageInfo
+
+func (m *GetCountByListResponse) GetCount() uint64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+type GetDocumentsByListAndContextsRequest struct {
+	ListId               uint64   `protobuf:"varint,1,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	ContextIds           []uint64 `protobuf:"varint,2,rep,packed,name=context_ids,json=contextIds,proto3" json:"context_ids,omitempty"`
+	Limit                int32    `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset               int32    `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetDocumentsByListAndContextsRequest) Reset()         { *m = GetDocumentsByListAndContextsRequest{} }
+func (m *GetDocumentsByListAndContextsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsByListAndContextsRequest) ProtoMessage()    {}
+func (*GetDocumentsByListAndContextsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{18}
+}
+func (m *GetDocumentsByListAndContextsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsByListAndContextsRequest.Unmarshal(m, b)
+}
+func (m *GetDocumentsByListAndContextsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsByListAndContextsRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsByListAndContextsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsByListAndContextsRequest.Merge(dst, src)
+}
+func (m *GetDocumentsByListAndContextsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsByListAndContextsRequest.Size(m)
+}
+func (m *GetDocumentsByListAndContextsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsByListAndContextsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsByListAndContextsRequest proto.InternalMessageInfo
+
+func (m *GetDocumentsByListAndContextsRequest) GetListId() uint64 {
+	if m != nil {
+		return m.ListId
+	}
+	return 0
+}
+
+func (m *GetDocumentsByListAndContextsRequest) GetContextIds() []uint64 {
+	if m != nil {
+		return m.ContextIds
+	}
+	return nil
+}
+
+func (m *GetDocumentsByListAndContextsRequest) GetLimit() int32 {
+	if m != nil {
+		return m.Limit
+	}
+	return 0
+}
+
+func (m *GetDocumentsByListAndContextsRequest) GetOffset() int32 {
+	if m != nil {
+		return m.Offset
+	}
+	return 0
+}
+
+type GetDocumentsByListAndContextsResponse struct {
+	Documents            []*task.Document `protobuf:"bytes,1,rep,name=documents,proto3" json:"documents,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *GetDocumentsByListAndContextsResponse) Reset()         { *m = GetDocumentsByListAndContextsResponse{} }
+func (m *GetDocumentsByListAndContextsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetDocumentsByListAndContextsResponse) ProtoMessage()    {}
+func (*GetDocumentsByListAndContextsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{19}
+}
+func (m *GetDocumentsByListAndContextsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetDocumentsByListAndContextsResponse.Unmarshal(m, b)
+}
+func (m *GetDocumentsByListAndContextsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetDocumentsByListAndContextsResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetDocumentsByListAndContextsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetDocumentsByListAndContextsResponse.Merge(dst, src)
+}
+func (m *GetDocumentsByListAndContextsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetDocumentsByListAndContextsResponse.Size(m)
+}
+func (m *GetDocumentsByListAndContextsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetDocumentsByListAndContextsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetDocumentsByListAndContextsResponse proto.InternalMessageInfo
+
+func (m *GetDocumentsByListAndContextsResponse) GetDocuments() []*task.Document {
+	if m != nil {
+		return m.Documents
+	}
+	return nil
+}
+
+type GetCountByListAndContextsRequest struct {
+	ListId               uint64   `protobuf:"varint,1,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	ContextIds           []uint64 `protobuf:"varint,2,rep,packed,name=context_ids,json=contextIds,proto3" json:"context_ids,omitempty"`
+	Limit                int32    `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset               int32    `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetCountByListAndContextsRequest) Reset()         { *m = GetCountByListAndContextsRequest{} }
+func (m *GetCountByListAndContextsRequest) String() string { return proto.CompactTextString(m) }
+func (*GetCountByListAndContextsRequest) ProtoMessage()    {}
+func (*GetCountByListAndContextsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{20}
+}
+func (m *GetCountByListAndContextsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCountByListAndContextsRequest.Unmarshal(m, b)
+}
+func (m *GetCountByListAndContextsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCountByListAndContextsRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetCountByListAndContextsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCountByListAndContextsRequest.Merge(dst, src)
+}
+func (m *GetCountByListAndContextsRequest) XXX_Size() int {
+	return xxx_messageInfo_GetCountByListAndContextsRequest.Size(m)
+}
+func (m *GetCountByListAndContextsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCountByListAndContextsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCountByListAndContextsRequest proto.InternalMessageInfo
+
+func (m *GetCountByListAndContextsRequest) GetListId() uint64 {
+	if m != nil {
+		return m.ListId
+	}
+	return 0
+}
+
+func (m *GetCountByListAndContextsRequest) GetContextIds() []uint64 {
+	if m != nil {
+		return m.ContextIds
+	}
+	return nil
+}
+
+func (m *GetCountByListAndContextsRequest) GetLimit() int32 {
+	if m != nil {
+		return m.Limit
+	}
+	return 0
+}
+
+func (m *GetCountByListAndContextsRequest) GetOffset() int32 {
+	if m != nil {
+		return m.Offset
+	}
+	return 0
+}
+
+type GetCountByListAndContextsResponse struct {
+	Count                uint64   `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetCountByListAndContextsResponse) Reset()         { *m = GetCountByListAndContextsResponse{} }
+func (m *GetCountByListAndContextsResponse) String() string { return proto.CompactTextString(m) }
+func (*GetCountByListAndContextsResponse) ProtoMessage()    {}
+func (*GetCountByListAndContextsResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_task_92320cc204955261, []int{21}
+}
+func (m *GetCountByListAndContextsResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetCountByListAndContextsResponse.Unmarshal(m, b)
+}
+func (m *GetCountByListAndContextsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetCountByListAndContextsResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetCountByListAndContextsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetCountByListAndContextsResponse.Merge(dst, src)
+}
+func (m *GetCountByListAndContextsResponse) XXX_Size() int {
+	return xxx_messageInfo_GetCountByListAndContextsResponse.Size(m)
+}
+func (m *GetCountByListAndContextsResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetCountByListAndContextsResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetCountByListAndContextsResponse proto.InternalMessageInfo
+
+func (m *GetCountByListAndContextsResponse) GetCount() uint64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+func init() {
+	proto.RegisterType((*CreateRequest)(nil), "service.task.CreateRequest")
+	proto.RegisterType((*CreateResponse)(nil), "service.task.CreateResponse")
+	proto.RegisterType((*UpdateRequest)(nil), "service.task.UpdateRequest")
+	proto.RegisterType((*UpdateResponse)(nil), "service.task.UpdateResponse")
+	proto.RegisterType((*DeleteRequest)(nil), "service.task.DeleteRequest")
+	proto.RegisterType((*DeleteResponse)(nil), "service.task.DeleteResponse")
+	proto.RegisterType((*GetDocumentRequest)(nil), "service.task.GetDocumentRequest")
+	proto.RegisterType((*GetDocumentResponse)(nil), "service.task.GetDocumentResponse")
+	proto.RegisterType((*GetDocumentsRequest)(nil), "service.task.GetDocumentsRequest")
+	proto.RegisterType((*GetDocumentsResponse)(nil), "service.task.GetDocumentsResponse")
+	proto.RegisterType((*GetDocumentsAllRequest)(nil), "service.task.GetDocumentsAllRequest")
+	proto.RegisterType((*GetDocumentsAllResponse)(nil), "service.task.GetDocumentsAllResponse")
+	proto.RegisterType((*GetCountAllRequest)(nil), "service.task.GetCountAllRequest")
+	proto.RegisterType((*GetCountAllResponse)(nil), "service.task.GetCountAllResponse")
+	proto.RegisterType((*GetDocumentsByListRequest)(nil), "service.task.GetDocumentsByListRequest")
+	proto.RegisterType((*GetDocumentsByListResponse)(nil), "service.task.GetDocumentsByListResponse")
+	proto.RegisterType((*GetCountByListRequest)(nil), "service.task.GetCountByListRequest")
+	proto.RegisterType((*GetCountByListResponse)(nil), "service.task.GetCountByListResponse")
+	proto.RegisterType((*GetDocumentsByListAndContextsRequest)(nil), "service.task.GetDocumentsByListAndContextsRequest")
+	proto.RegisterType((*GetDocumentsByListAndContextsResponse)(nil), "service.task.GetDocumentsByListAndContextsResponse")
+	proto.RegisterType((*GetCountByListAndContextsRequest)(nil), "service.task.GetCountByListAndContextsRequest")
+	proto.RegisterType((*GetCountByListAndContextsResponse)(nil), "service.task.GetCountByListAndContextsResponse")
+}
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
 var _ grpc.ClientConn
@@ -38,15 +986,17 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TaskClient interface {
-	Create(ctx context.Context, in *task.CreateRequest, opts ...grpc.CallOption) (*task.Document, error)
-	Update(ctx context.Context, in *task.UpdateRequest, opts ...grpc.CallOption) (*task.Document, error)
-	Delete(ctx context.Context, in *task.DeleteRequest, opts ...grpc.CallOption) (*task.Document, error)
-	GetDocument(ctx context.Context, in *common.Id, opts ...grpc.CallOption) (*task.Document, error)
-	GetDocuments(ctx context.Context, in *common.Ids, opts ...grpc.CallOption) (Task_GetDocumentsClient, error)
-	GetDocumentsAll(ctx context.Context, in *common.Pagination, opts ...grpc.CallOption) (Task_GetDocumentsAllClient, error)
-	GetCountAll(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.Count, error)
-	GetDocumentsByList(ctx context.Context, in *common.IdPagination, opts ...grpc.CallOption) (Task_GetDocumentsByListClient, error)
-	GetCountByList(ctx context.Context, in *common.Id, opts ...grpc.CallOption) (*common.Count, error)
+	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error)
+	GetDocuments(ctx context.Context, in *GetDocumentsRequest, opts ...grpc.CallOption) (*GetDocumentsResponse, error)
+	GetDocumentsAll(ctx context.Context, in *GetDocumentsAllRequest, opts ...grpc.CallOption) (*GetDocumentsAllResponse, error)
+	GetCountAll(ctx context.Context, in *GetCountAllRequest, opts ...grpc.CallOption) (*GetCountAllResponse, error)
+	GetDocumentsByList(ctx context.Context, in *GetDocumentsByListRequest, opts ...grpc.CallOption) (*GetDocumentsByListResponse, error)
+	GetCountByList(ctx context.Context, in *GetCountByListRequest, opts ...grpc.CallOption) (*GetCountByListResponse, error)
+	GetDocumentsByListAndContexts(ctx context.Context, in *GetDocumentsByListAndContextsRequest, opts ...grpc.CallOption) (*GetDocumentsByListAndContextsResponse, error)
+	GetCountByListAndContexts(ctx context.Context, in *GetCountByListAndContextsRequest, opts ...grpc.CallOption) (*GetCountByListAndContextsResponse, error)
 }
 
 type taskClient struct {
@@ -57,8 +1007,8 @@ func NewTaskClient(cc *grpc.ClientConn) TaskClient {
 	return &taskClient{cc}
 }
 
-func (c *taskClient) Create(ctx context.Context, in *task.CreateRequest, opts ...grpc.CallOption) (*task.Document, error) {
-	out := new(task.Document)
+func (c *taskClient) Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
+	out := new(CreateResponse)
 	err := c.cc.Invoke(ctx, "/service.task.Task/Create", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -66,8 +1016,8 @@ func (c *taskClient) Create(ctx context.Context, in *task.CreateRequest, opts ..
 	return out, nil
 }
 
-func (c *taskClient) Update(ctx context.Context, in *task.UpdateRequest, opts ...grpc.CallOption) (*task.Document, error) {
-	out := new(task.Document)
+func (c *taskClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
+	out := new(UpdateResponse)
 	err := c.cc.Invoke(ctx, "/service.task.Task/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -75,8 +1025,8 @@ func (c *taskClient) Update(ctx context.Context, in *task.UpdateRequest, opts ..
 	return out, nil
 }
 
-func (c *taskClient) Delete(ctx context.Context, in *task.DeleteRequest, opts ...grpc.CallOption) (*task.Document, error) {
-	out := new(task.Document)
+func (c *taskClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
 	err := c.cc.Invoke(ctx, "/service.task.Task/Delete", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -84,8 +1034,8 @@ func (c *taskClient) Delete(ctx context.Context, in *task.DeleteRequest, opts ..
 	return out, nil
 }
 
-func (c *taskClient) GetDocument(ctx context.Context, in *common.Id, opts ...grpc.CallOption) (*task.Document, error) {
-	out := new(task.Document)
+func (c *taskClient) GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error) {
+	out := new(GetDocumentResponse)
 	err := c.cc.Invoke(ctx, "/service.task.Task/GetDocument", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -93,72 +1043,26 @@ func (c *taskClient) GetDocument(ctx context.Context, in *common.Id, opts ...grp
 	return out, nil
 }
 
-func (c *taskClient) GetDocuments(ctx context.Context, in *common.Ids, opts ...grpc.CallOption) (Task_GetDocumentsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Task_serviceDesc.Streams[0], "/service.task.Task/GetDocuments", opts...)
+func (c *taskClient) GetDocuments(ctx context.Context, in *GetDocumentsRequest, opts ...grpc.CallOption) (*GetDocumentsResponse, error) {
+	out := new(GetDocumentsResponse)
+	err := c.cc.Invoke(ctx, "/service.task.Task/GetDocuments", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &taskGetDocumentsClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type Task_GetDocumentsClient interface {
-	Recv() (*task.Document, error)
-	grpc.ClientStream
-}
-
-type taskGetDocumentsClient struct {
-	grpc.ClientStream
-}
-
-func (x *taskGetDocumentsClient) Recv() (*task.Document, error) {
-	m := new(task.Document)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *taskClient) GetDocumentsAll(ctx context.Context, in *common.Pagination, opts ...grpc.CallOption) (Task_GetDocumentsAllClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Task_serviceDesc.Streams[1], "/service.task.Task/GetDocumentsAll", opts...)
+func (c *taskClient) GetDocumentsAll(ctx context.Context, in *GetDocumentsAllRequest, opts ...grpc.CallOption) (*GetDocumentsAllResponse, error) {
+	out := new(GetDocumentsAllResponse)
+	err := c.cc.Invoke(ctx, "/service.task.Task/GetDocumentsAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &taskGetDocumentsAllClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type Task_GetDocumentsAllClient interface {
-	Recv() (*task.Document, error)
-	grpc.ClientStream
-}
-
-type taskGetDocumentsAllClient struct {
-	grpc.ClientStream
-}
-
-func (x *taskGetDocumentsAllClient) Recv() (*task.Document, error) {
-	m := new(task.Document)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *taskClient) GetCountAll(ctx context.Context, in *common.Empty, opts ...grpc.CallOption) (*common.Count, error) {
-	out := new(common.Count)
+func (c *taskClient) GetCountAll(ctx context.Context, in *GetCountAllRequest, opts ...grpc.CallOption) (*GetCountAllResponse, error) {
+	out := new(GetCountAllResponse)
 	err := c.cc.Invoke(ctx, "/service.task.Task/GetCountAll", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -166,41 +1070,36 @@ func (c *taskClient) GetCountAll(ctx context.Context, in *common.Empty, opts ...
 	return out, nil
 }
 
-func (c *taskClient) GetDocumentsByList(ctx context.Context, in *common.IdPagination, opts ...grpc.CallOption) (Task_GetDocumentsByListClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Task_serviceDesc.Streams[2], "/service.task.Task/GetDocumentsByList", opts...)
+func (c *taskClient) GetDocumentsByList(ctx context.Context, in *GetDocumentsByListRequest, opts ...grpc.CallOption) (*GetDocumentsByListResponse, error) {
+	out := new(GetDocumentsByListResponse)
+	err := c.cc.Invoke(ctx, "/service.task.Task/GetDocumentsByList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &taskGetDocumentsByListClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
+	return out, nil
 }
 
-type Task_GetDocumentsByListClient interface {
-	Recv() (*task.Document, error)
-	grpc.ClientStream
-}
-
-type taskGetDocumentsByListClient struct {
-	grpc.ClientStream
-}
-
-func (x *taskGetDocumentsByListClient) Recv() (*task.Document, error) {
-	m := new(task.Document)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *taskClient) GetCountByList(ctx context.Context, in *common.Id, opts ...grpc.CallOption) (*common.Count, error) {
-	out := new(common.Count)
+func (c *taskClient) GetCountByList(ctx context.Context, in *GetCountByListRequest, opts ...grpc.CallOption) (*GetCountByListResponse, error) {
+	out := new(GetCountByListResponse)
 	err := c.cc.Invoke(ctx, "/service.task.Task/GetCountByList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taskClient) GetDocumentsByListAndContexts(ctx context.Context, in *GetDocumentsByListAndContextsRequest, opts ...grpc.CallOption) (*GetDocumentsByListAndContextsResponse, error) {
+	out := new(GetDocumentsByListAndContextsResponse)
+	err := c.cc.Invoke(ctx, "/service.task.Task/GetDocumentsByListAndContexts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *taskClient) GetCountByListAndContexts(ctx context.Context, in *GetCountByListAndContextsRequest, opts ...grpc.CallOption) (*GetCountByListAndContextsResponse, error) {
+	out := new(GetCountByListAndContextsResponse)
+	err := c.cc.Invoke(ctx, "/service.task.Task/GetCountByListAndContexts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -209,15 +1108,17 @@ func (c *taskClient) GetCountByList(ctx context.Context, in *common.Id, opts ...
 
 // TaskServer is the server API for Task service.
 type TaskServer interface {
-	Create(context.Context, *task.CreateRequest) (*task.Document, error)
-	Update(context.Context, *task.UpdateRequest) (*task.Document, error)
-	Delete(context.Context, *task.DeleteRequest) (*task.Document, error)
-	GetDocument(context.Context, *common.Id) (*task.Document, error)
-	GetDocuments(*common.Ids, Task_GetDocumentsServer) error
-	GetDocumentsAll(*common.Pagination, Task_GetDocumentsAllServer) error
-	GetCountAll(context.Context, *common.Empty) (*common.Count, error)
-	GetDocumentsByList(*common.IdPagination, Task_GetDocumentsByListServer) error
-	GetCountByList(context.Context, *common.Id) (*common.Count, error)
+	Create(context.Context, *CreateRequest) (*CreateResponse, error)
+	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error)
+	GetDocuments(context.Context, *GetDocumentsRequest) (*GetDocumentsResponse, error)
+	GetDocumentsAll(context.Context, *GetDocumentsAllRequest) (*GetDocumentsAllResponse, error)
+	GetCountAll(context.Context, *GetCountAllRequest) (*GetCountAllResponse, error)
+	GetDocumentsByList(context.Context, *GetDocumentsByListRequest) (*GetDocumentsByListResponse, error)
+	GetCountByList(context.Context, *GetCountByListRequest) (*GetCountByListResponse, error)
+	GetDocumentsByListAndContexts(context.Context, *GetDocumentsByListAndContextsRequest) (*GetDocumentsByListAndContextsResponse, error)
+	GetCountByListAndContexts(context.Context, *GetCountByListAndContextsRequest) (*GetCountByListAndContextsResponse, error)
 }
 
 func RegisterTaskServer(s *grpc.Server, srv TaskServer) {
@@ -225,7 +1126,7 @@ func RegisterTaskServer(s *grpc.Server, srv TaskServer) {
 }
 
 func _Task_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(task.CreateRequest)
+	in := new(CreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -237,13 +1138,13 @@ func _Task_Create_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/service.task.Task/Create",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServer).Create(ctx, req.(*task.CreateRequest))
+		return srv.(TaskServer).Create(ctx, req.(*CreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Task_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(task.UpdateRequest)
+	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -255,13 +1156,13 @@ func _Task_Update_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/service.task.Task/Update",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServer).Update(ctx, req.(*task.UpdateRequest))
+		return srv.(TaskServer).Update(ctx, req.(*UpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Task_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(task.DeleteRequest)
+	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -273,13 +1174,13 @@ func _Task_Delete_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/service.task.Task/Delete",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServer).Delete(ctx, req.(*task.DeleteRequest))
+		return srv.(TaskServer).Delete(ctx, req.(*DeleteRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Task_GetDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(common.Id)
+	in := new(GetDocumentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -291,55 +1192,49 @@ func _Task_GetDocument_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/service.task.Task/GetDocument",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServer).GetDocument(ctx, req.(*common.Id))
+		return srv.(TaskServer).GetDocument(ctx, req.(*GetDocumentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Task_GetDocuments_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(common.Ids)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _Task_GetDocuments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDocumentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(TaskServer).GetDocuments(m, &taskGetDocumentsServer{stream})
-}
-
-type Task_GetDocumentsServer interface {
-	Send(*task.Document) error
-	grpc.ServerStream
-}
-
-type taskGetDocumentsServer struct {
-	grpc.ServerStream
-}
-
-func (x *taskGetDocumentsServer) Send(m *task.Document) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _Task_GetDocumentsAll_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(common.Pagination)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+	if interceptor == nil {
+		return srv.(TaskServer).GetDocuments(ctx, in)
 	}
-	return srv.(TaskServer).GetDocumentsAll(m, &taskGetDocumentsAllServer{stream})
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.task.Task/GetDocuments",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).GetDocuments(ctx, req.(*GetDocumentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-type Task_GetDocumentsAllServer interface {
-	Send(*task.Document) error
-	grpc.ServerStream
-}
-
-type taskGetDocumentsAllServer struct {
-	grpc.ServerStream
-}
-
-func (x *taskGetDocumentsAllServer) Send(m *task.Document) error {
-	return x.ServerStream.SendMsg(m)
+func _Task_GetDocumentsAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDocumentsAllRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).GetDocumentsAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.task.Task/GetDocumentsAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).GetDocumentsAll(ctx, req.(*GetDocumentsAllRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Task_GetCountAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(common.Empty)
+	in := new(GetCountAllRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -351,34 +1246,31 @@ func _Task_GetCountAll_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/service.task.Task/GetCountAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServer).GetCountAll(ctx, req.(*common.Empty))
+		return srv.(TaskServer).GetCountAll(ctx, req.(*GetCountAllRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Task_GetDocumentsByList_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(common.IdPagination)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
+func _Task_GetDocumentsByList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDocumentsByListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
 	}
-	return srv.(TaskServer).GetDocumentsByList(m, &taskGetDocumentsByListServer{stream})
-}
-
-type Task_GetDocumentsByListServer interface {
-	Send(*task.Document) error
-	grpc.ServerStream
-}
-
-type taskGetDocumentsByListServer struct {
-	grpc.ServerStream
-}
-
-func (x *taskGetDocumentsByListServer) Send(m *task.Document) error {
-	return x.ServerStream.SendMsg(m)
+	if interceptor == nil {
+		return srv.(TaskServer).GetDocumentsByList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.task.Task/GetDocumentsByList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).GetDocumentsByList(ctx, req.(*GetDocumentsByListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Task_GetCountByList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(common.Id)
+	in := new(GetCountByListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -390,7 +1282,43 @@ func _Task_GetCountByList_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/service.task.Task/GetCountByList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TaskServer).GetCountByList(ctx, req.(*common.Id))
+		return srv.(TaskServer).GetCountByList(ctx, req.(*GetCountByListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Task_GetDocumentsByListAndContexts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDocumentsByListAndContextsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).GetDocumentsByListAndContexts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.task.Task/GetDocumentsByListAndContexts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).GetDocumentsByListAndContexts(ctx, req.(*GetDocumentsByListAndContextsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Task_GetCountByListAndContexts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCountByListAndContextsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TaskServer).GetCountByListAndContexts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.task.Task/GetCountByListAndContexts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TaskServer).GetCountByListAndContexts(ctx, req.(*GetCountByListAndContextsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -416,62 +1344,93 @@ var _Task_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Task_GetDocument_Handler,
 		},
 		{
+			MethodName: "GetDocuments",
+			Handler:    _Task_GetDocuments_Handler,
+		},
+		{
+			MethodName: "GetDocumentsAll",
+			Handler:    _Task_GetDocumentsAll_Handler,
+		},
+		{
 			MethodName: "GetCountAll",
 			Handler:    _Task_GetCountAll_Handler,
+		},
+		{
+			MethodName: "GetDocumentsByList",
+			Handler:    _Task_GetDocumentsByList_Handler,
 		},
 		{
 			MethodName: "GetCountByList",
 			Handler:    _Task_GetCountByList_Handler,
 		},
-	},
-	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetDocuments",
-			Handler:       _Task_GetDocuments_Handler,
-			ServerStreams: true,
+			MethodName: "GetDocumentsByListAndContexts",
+			Handler:    _Task_GetDocumentsByListAndContexts_Handler,
 		},
 		{
-			StreamName:    "GetDocumentsAll",
-			Handler:       _Task_GetDocumentsAll_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "GetDocumentsByList",
-			Handler:       _Task_GetDocumentsByList_Handler,
-			ServerStreams: true,
+			MethodName: "GetCountByListAndContexts",
+			Handler:    _Task_GetCountByListAndContexts_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "service/task.proto",
 }
 
-func init() { proto.RegisterFile("service/task.proto", fileDescriptor_task_4b05f01ba3c3b595) }
+func init() { proto.RegisterFile("service/task.proto", fileDescriptor_task_92320cc204955261) }
 
-var fileDescriptor_task_4b05f01ba3c3b595 = []byte{
-	// 411 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x93, 0xc1, 0xea, 0xd3, 0x40,
-	0x10, 0xc6, 0xa9, 0x48, 0x90, 0xf5, 0xff, 0xb7, 0x30, 0xb5, 0x52, 0xb7, 0x3d, 0x68, 0x8f, 0x05,
-	0xb3, 0xd5, 0xe2, 0xc5, 0x9b, 0x6d, 0x45, 0x04, 0x0f, 0xa5, 0x54, 0x14, 0x0f, 0xca, 0x36, 0x59,
-	0xe2, 0xd2, 0x64, 0x37, 0x76, 0x36, 0x85, 0x22, 0xbd, 0xf8, 0x0a, 0x3e, 0x91, 0xcf, 0xe0, 0x2b,
-	0xf8, 0x20, 0x92, 0xdd, 0x44, 0xd2, 0x26, 0xa5, 0xbd, 0x7e, 0x3b, 0xf3, 0xfb, 0x66, 0xbe, 0x64,
-	0x08, 0xa0, 0xd8, 0xee, 0x64, 0x20, 0x98, 0xe1, 0xb8, 0xf1, 0xd3, 0xad, 0x36, 0x1a, 0x6e, 0x0a,
-	0xcd, 0xcf, 0x35, 0x3a, 0x88, 0xb4, 0x8e, 0x62, 0xc1, 0x78, 0x2a, 0x19, 0x57, 0x4a, 0x1b, 0x6e,
-	0xa4, 0x56, 0xe8, 0x6a, 0x29, 0x24, 0x02, 0x91, 0x47, 0xd5, 0x7e, 0xfa, 0xb0, 0xd4, 0x02, 0x9d,
-	0x24, 0x5a, 0x39, 0xf5, 0xc5, 0x6f, 0x8f, 0xdc, 0x5d, 0x71, 0xdc, 0xc0, 0x92, 0x78, 0xb3, 0xad,
-	0xe0, 0x46, 0x40, 0xdf, 0x2f, 0x2a, 0xad, 0x93, 0xef, 0xd4, 0xa5, 0xf8, 0x9e, 0x09, 0x34, 0xf4,
-	0xd1, 0xf1, 0xe3, 0x5c, 0x07, 0x59, 0x22, 0x94, 0x19, 0x76, 0x7e, 0xfe, 0xf9, 0xfb, 0xeb, 0xce,
-	0xed, 0xf0, 0x1e, 0xdb, 0x3d, 0xb7, 0xae, 0xaf, 0x5a, 0x23, 0xf8, 0x48, 0xbc, 0x0f, 0x69, 0xd8,
-	0xc0, 0x74, 0xea, 0x25, 0x66, 0xcf, 0x32, 0x81, 0xde, 0x96, 0x4c, 0xf6, 0x43, 0x86, 0x87, 0x1c,
-	0xbc, 0x22, 0xde, 0x5c, 0xc4, 0xa2, 0x0e, 0x76, 0xea, 0x25, 0x70, 0xd7, 0x82, 0xdb, 0xa3, 0x63,
-	0x30, 0x2c, 0xc8, 0xfd, 0xb7, 0xc2, 0x94, 0x55, 0x00, 0xff, 0xbb, 0x8b, 0xc4, 0xde, 0x85, 0x97,
-	0x88, 0x70, 0x42, 0xfc, 0x4a, 0x6e, 0x2a, 0x44, 0x84, 0x4e, 0x1d, 0x89, 0x67, 0x99, 0x4f, 0x2c,
-	0x93, 0x42, 0xaf, 0x64, 0x22, 0x0b, 0x8b, 0xb7, 0x9c, 0x8e, 0x87, 0x71, 0x0b, 0xbe, 0x90, 0x76,
-	0xd5, 0xe0, 0x75, 0x1c, 0x03, 0x3d, 0xf5, 0x58, 0xf0, 0x48, 0x2a, 0xfb, 0x7b, 0x5c, 0x3f, 0x3e,
-	0x32, 0x1e, 0xc7, 0xe3, 0x16, 0x7c, 0xb2, 0x91, 0xcc, 0x74, 0xa6, 0x4c, 0xce, 0xee, 0x9e, 0xb2,
-	0xdf, 0x24, 0xa9, 0xd9, 0xd3, 0x9a, 0x6c, 0x1b, 0x86, 0x7d, 0x4b, 0xed, 0x42, 0xe7, 0x88, 0xca,
-	0x82, 0xfc, 0x11, 0x24, 0x81, 0xea, 0xe4, 0xd3, 0xfd, 0x7b, 0x89, 0x06, 0x06, 0xf5, 0x80, 0xae,
-	0x18, 0xbf, 0xc1, 0x28, 0x96, 0x68, 0x53, 0x72, 0x21, 0x3d, 0x28, 0x97, 0x28, 0x6c, 0x9a, 0x3e,
-	0xed, 0x99, 0x25, 0x9e, 0x5a, 0x76, 0x1f, 0x1e, 0x37, 0xb0, 0xdd, 0x2a, 0xd3, 0x97, 0x9f, 0x27,
-	0x91, 0x34, 0xdf, 0xb2, 0x75, 0xde, 0xc9, 0xd6, 0x22, 0xd0, 0x98, 0x6d, 0xdc, 0xed, 0xe1, 0xb3,
-	0xfc, 0x40, 0xed, 0xa9, 0x45, 0x42, 0xb1, 0xea, 0x59, 0xaf, 0x3d, 0x2b, 0x4f, 0xfe, 0x05, 0x00,
-	0x00, 0xff, 0xff, 0xab, 0xa4, 0xcb, 0xbf, 0xed, 0x03, 0x00, 0x00,
+var fileDescriptor_task_92320cc204955261 = []byte{
+	// 840 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x57, 0xdd, 0x4e, 0xdb, 0x48,
+	0x18, 0x95, 0xf3, 0xb7, 0xf0, 0x41, 0x60, 0xf5, 0x11, 0x20, 0x6b, 0xd8, 0x25, 0x78, 0xc3, 0x12,
+	0xb1, 0x5a, 0x7b, 0x09, 0x8b, 0xd0, 0xae, 0xb4, 0x2b, 0xf1, 0xa3, 0xad, 0x90, 0x50, 0x2b, 0x59,
+	0xad, 0x54, 0x21, 0x21, 0xe4, 0xc4, 0x43, 0x6a, 0xe1, 0xd8, 0x29, 0x33, 0xa1, 0xad, 0x50, 0x6e,
+	0xda, 0xab, 0xf6, 0xa2, 0x37, 0x7d, 0x9c, 0x5e, 0xf5, 0x19, 0xfa, 0x0a, 0x7d, 0x8b, 0xde, 0x54,
+	0x1e, 0xdb, 0xc4, 0xe3, 0xd8, 0x0e, 0x28, 0x17, 0xbd, 0xcb, 0x8c, 0xbf, 0x39, 0xe7, 0x7c, 0x67,
+	0xc6, 0x67, 0x1c, 0x40, 0x4a, 0xae, 0xae, 0xad, 0x36, 0xd1, 0x98, 0x41, 0x2f, 0xd5, 0xde, 0x95,
+	0xcb, 0x5c, 0x9c, 0x0d, 0xe6, 0x54, 0x6f, 0x4e, 0x5e, 0xed, 0xb8, 0x6e, 0xc7, 0x26, 0x9a, 0xd1,
+	0xb3, 0x34, 0xc3, 0x71, 0x5c, 0x66, 0x30, 0xcb, 0x75, 0xa8, 0x5f, 0x2b, 0x63, 0x97, 0x50, 0x6a,
+	0x74, 0xa2, 0xeb, 0x95, 0xff, 0xa0, 0x7c, 0x78, 0x45, 0x0c, 0x46, 0x74, 0xf2, 0xbc, 0x4f, 0x28,
+	0xc3, 0x65, 0xf8, 0xc1, 0xb6, 0x28, 0x3b, 0xb7, 0xcc, 0xaa, 0x54, 0x93, 0x1a, 0x05, 0xbd, 0xe4,
+	0x0d, 0x8f, 0x4d, 0xac, 0x40, 0x91, 0x59, 0xcc, 0x26, 0xd5, 0x5c, 0x4d, 0x6a, 0x4c, 0xeb, 0xfe,
+	0x40, 0x39, 0x82, 0xb9, 0x70, 0x3d, 0xed, 0xb9, 0x0e, 0x25, 0xd8, 0x84, 0x29, 0xd3, 0x6d, 0xf7,
+	0xbb, 0xc4, 0x61, 0x1c, 0x61, 0xa6, 0xb9, 0xa4, 0x06, 0xc4, 0x5c, 0xa4, 0x7a, 0x14, 0x3c, 0xd5,
+	0x6f, 0xeb, 0x94, 0x87, 0x50, 0x7e, 0xd2, 0x33, 0x23, 0x2a, 0xe6, 0x20, 0x77, 0x2b, 0x20, 0x67,
+	0x99, 0x51, 0x55, 0xb9, 0x64, 0x55, 0xf9, 0x98, 0xaa, 0x10, 0x6f, 0x02, 0x55, 0x6b, 0x50, 0x3e,
+	0x22, 0x36, 0x49, 0x55, 0xe5, 0xd1, 0x84, 0x05, 0x13, 0xd0, 0xd4, 0x01, 0x1f, 0x10, 0x76, 0xfb,
+	0x20, 0x85, 0xeb, 0x18, 0x16, 0x84, 0xaa, 0x09, 0x08, 0x37, 0x05, 0x28, 0x1a, 0x32, 0xfe, 0x08,
+	0x79, 0xcb, 0xa4, 0x55, 0xa9, 0x96, 0x6f, 0x14, 0x74, 0xef, 0xa7, 0x72, 0x02, 0x15, 0xb1, 0x30,
+	0x20, 0xfd, 0x0b, 0xa6, 0x43, 0x30, 0xbf, 0x3e, 0x9d, 0x75, 0x58, 0xa8, 0xfc, 0x0f, 0x4b, 0x51,
+	0xb4, 0x7d, 0xdb, 0x0e, 0x99, 0x2b, 0x50, 0xb4, 0xad, 0xae, 0xe5, 0x77, 0x50, 0xd4, 0xfd, 0x01,
+	0x2e, 0x41, 0xc9, 0xbd, 0xb8, 0xa0, 0x84, 0xf1, 0x2d, 0x2f, 0xea, 0xc1, 0x48, 0x79, 0x04, 0xcb,
+	0x23, 0x38, 0x13, 0x09, 0xab, 0xf0, 0x0d, 0x38, 0x74, 0xfb, 0x0e, 0x1b, 0x8a, 0x52, 0x7e, 0xe7,
+	0x2e, 0x0d, 0x67, 0x03, 0x8a, 0x0a, 0x14, 0xdb, 0xde, 0x5c, 0xb0, 0x35, 0xfe, 0x40, 0x69, 0xc1,
+	0x4f, 0x51, 0x4d, 0x07, 0xaf, 0x4e, 0x2c, 0xca, 0xee, 0xf2, 0x4a, 0xf9, 0x7d, 0xe7, 0x92, 0xfb,
+	0xce, 0x0b, 0x7d, 0xeb, 0x20, 0x27, 0x71, 0x4c, 0xd4, 0xfa, 0x9f, 0xb0, 0x18, 0x36, 0x79, 0x37,
+	0xcd, 0x8a, 0xca, 0x77, 0x51, 0x58, 0x91, 0xe9, 0xcc, 0x7b, 0x09, 0xea, 0xa3, 0xb2, 0xf7, 0x1d,
+	0xf3, 0xd0, 0x75, 0x18, 0x79, 0x39, 0x3c, 0x7e, 0xa9, 0x2e, 0xad, 0xc1, 0x4c, 0xdb, 0xaf, 0x3d,
+	0xf7, 0xce, 0x67, 0x8e, 0x9f, 0x4f, 0x08, 0xa6, 0x8e, 0x4d, 0x3a, 0xb4, 0x31, 0x9f, 0x6c, 0x63,
+	0x41, 0xb0, 0xf1, 0x0c, 0x36, 0xc6, 0xe8, 0x99, 0xc8, 0xd1, 0x77, 0x12, 0xd4, 0x44, 0x83, 0xbe,
+	0x63, 0xaf, 0x7f, 0xc3, 0x7a, 0x86, 0x96, 0xac, 0x7d, 0x6b, 0x7e, 0x05, 0x28, 0x3c, 0x36, 0xe8,
+	0x25, 0x3e, 0x85, 0x92, 0x9f, 0xf0, 0xb8, 0xa2, 0x46, 0x2f, 0x1b, 0x55, 0xb8, 0x37, 0xe4, 0xd5,
+	0xe4, 0x87, 0x3e, 0x87, 0xb2, 0xf0, 0xfa, 0xf3, 0x97, 0x0f, 0xb9, 0xb2, 0x32, 0xa5, 0x5d, 0x6f,
+	0xf3, 0xeb, 0xe7, 0x1f, 0x69, 0x0b, 0xcf, 0xa0, 0xe4, 0xa7, 0x74, 0x1c, 0x59, 0xb8, 0x0b, 0xe2,
+	0xc8, 0x62, 0xb0, 0x2b, 0x55, 0x8e, 0x8c, 0x72, 0x39, 0x44, 0xd6, 0x6e, 0x2c, 0x73, 0xe0, 0xc1,
+	0x9f, 0x42, 0xc9, 0x4f, 0xe7, 0x38, 0xbc, 0x10, 0xea, 0x71, 0x78, 0x31, 0xd0, 0x95, 0x45, 0x0e,
+	0x3f, 0xbf, 0x25, 0xc2, 0xa3, 0x05, 0x33, 0x91, 0x43, 0x84, 0x35, 0x11, 0x63, 0x34, 0xce, 0xe5,
+	0xf5, 0x8c, 0x0a, 0x91, 0x0a, 0x63, 0x54, 0x2f, 0x60, 0x36, 0x7a, 0x5e, 0x31, 0x1d, 0x29, 0x3c,
+	0x5e, 0xb2, 0x92, 0x55, 0x12, 0xb0, 0xd5, 0x38, 0x9b, 0x8c, 0xd5, 0x90, 0x8d, 0x6a, 0xe1, 0x21,
+	0xf6, 0x78, 0xe9, 0x00, 0xfb, 0x30, 0x1f, 0xcb, 0x59, 0xac, 0xa7, 0x03, 0x0f, 0x93, 0x53, 0xde,
+	0x18, 0x53, 0x95, 0xd6, 0x2f, 0xd5, 0x0c, 0xdb, 0x46, 0x97, 0x5b, 0x1b, 0xe6, 0x6e, 0x82, 0xb5,
+	0xb1, 0xa0, 0x4e, 0xb0, 0x36, 0x1e, 0xda, 0xca, 0x0a, 0xa7, 0x5a, 0xc4, 0x05, 0x81, 0x4a, 0xe3,
+	0x27, 0x1d, 0xdf, 0x4a, 0xc2, 0x05, 0x1c, 0x24, 0x02, 0x6e, 0xa6, 0x77, 0x21, 0x44, 0xa5, 0xdc,
+	0x18, 0x5f, 0x98, 0xee, 0xb9, 0xf7, 0xde, 0x6b, 0x37, 0x41, 0x18, 0x0c, 0xf0, 0x8d, 0x04, 0x73,
+	0xe2, 0x1b, 0x8b, 0xbf, 0x26, 0xb7, 0x27, 0x6a, 0xa8, 0x67, 0x17, 0x05, 0xfc, 0xbf, 0x71, 0xfe,
+	0x1a, 0xfe, 0x92, 0xc6, 0x1f, 0x38, 0xf2, 0x49, 0x82, 0x9f, 0x33, 0x33, 0x12, 0x9b, 0xe3, 0x7a,
+	0x1e, 0x0d, 0x3d, 0x79, 0xe7, 0x5e, 0x6b, 0x02, 0xc9, 0x7b, 0x5c, 0xf2, 0x36, 0x6a, 0x19, 0x92,
+	0xfd, 0x25, 0xda, 0x4d, 0x24, 0x39, 0x07, 0xf8, 0x51, 0xe2, 0x57, 0x72, 0x72, 0xf6, 0xa1, 0x9a,
+	0xe5, 0x57, 0x82, 0x76, 0xed, 0xce, 0xf5, 0x81, 0xee, 0x7f, 0xb9, 0xee, 0x3d, 0xdc, 0xbd, 0xa7,
+	0x6e, 0x7f, 0x07, 0x0e, 0x76, 0x4f, 0x77, 0x3a, 0x16, 0x7b, 0xd6, 0x6f, 0xa9, 0x6d, 0xb7, 0xab,
+	0xb5, 0x48, 0xdb, 0xa5, 0xfd, 0x4b, 0xff, 0xc3, 0x9d, 0xfe, 0xe1, 0x7d, 0xdd, 0xf3, 0xaf, 0xf7,
+	0x0e, 0x71, 0xb4, 0xe8, 0x7f, 0x82, 0x56, 0x89, 0x4f, 0xef, 0x7c, 0x0b, 0x00, 0x00, 0xff, 0xff,
+	0x78, 0xf5, 0x1c, 0xae, 0x2a, 0x0c, 0x00, 0x00,
 }

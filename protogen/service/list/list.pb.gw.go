@@ -12,8 +12,6 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/becosuke/tasks-api/protogen/message/common"
-	"github.com/becosuke/tasks-api/protogen/message/list"
 	"github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
@@ -31,7 +29,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
 func request_List_Create_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq list.CreateRequest
+	var protoReq CreateRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
@@ -44,7 +42,7 @@ func request_List_Create_0(ctx context.Context, marshaler runtime.Marshaler, cli
 }
 
 func request_List_Update_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq list.UpdateRequest
+	var protoReq UpdateRequest
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
@@ -75,7 +73,7 @@ func request_List_Update_0(ctx context.Context, marshaler runtime.Marshaler, cli
 }
 
 func request_List_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq list.DeleteRequest
+	var protoReq DeleteRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -102,7 +100,7 @@ func request_List_Delete_0(ctx context.Context, marshaler runtime.Marshaler, cli
 }
 
 func request_List_GetDocument_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq common.Id
+	var protoReq GetDocumentRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -128,8 +126,8 @@ func request_List_GetDocument_0(ctx context.Context, marshaler runtime.Marshaler
 
 }
 
-func request_List_GetDocuments_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (List_GetDocumentsClient, runtime.ServerMetadata, error) {
-	var protoReq common.Ids
+func request_List_GetDocuments_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDocumentsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -150,16 +148,8 @@ func request_List_GetDocuments_0(ctx context.Context, marshaler runtime.Marshale
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ids", err)
 	}
 
-	stream, err := client.GetDocuments(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
-	}
-	header, err := stream.Header()
-	if err != nil {
-		return nil, metadata, err
-	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+	msg, err := client.GetDocuments(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
 
 }
 
@@ -167,29 +157,21 @@ var (
 	filter_List_GetDocumentsAll_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_List_GetDocumentsAll_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (List_GetDocumentsAllClient, runtime.ServerMetadata, error) {
-	var protoReq common.Pagination
+func request_List_GetDocumentsAll_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetDocumentsAllRequest
 	var metadata runtime.ServerMetadata
 
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_List_GetDocumentsAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetDocumentsAll(ctx, &protoReq)
-	if err != nil {
-		return nil, metadata, err
-	}
-	header, err := stream.Header()
-	if err != nil {
-		return nil, metadata, err
-	}
-	metadata.HeaderMD = header
-	return stream, metadata, nil
+	msg, err := client.GetDocumentsAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
 
 }
 
 func request_List_GetCountAll_0(ctx context.Context, marshaler runtime.Marshaler, client ListClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq common.Empty
+	var protoReq GetCountAllRequest
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.GetCountAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -376,7 +358,7 @@ func RegisterListHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 			return
 		}
 
-		forward_List_GetDocuments_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_List_GetDocuments_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -405,7 +387,7 @@ func RegisterListHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 			return
 		}
 
-		forward_List_GetDocumentsAll_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_List_GetDocumentsAll_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -466,9 +448,9 @@ var (
 
 	forward_List_GetDocument_0 = runtime.ForwardResponseMessage
 
-	forward_List_GetDocuments_0 = runtime.ForwardResponseStream
+	forward_List_GetDocuments_0 = runtime.ForwardResponseMessage
 
-	forward_List_GetDocumentsAll_0 = runtime.ForwardResponseStream
+	forward_List_GetDocumentsAll_0 = runtime.ForwardResponseMessage
 
 	forward_List_GetCountAll_0 = runtime.ForwardResponseMessage
 )
