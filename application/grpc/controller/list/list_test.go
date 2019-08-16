@@ -3,16 +3,19 @@ package list
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log"
 	"net"
 	"os"
 	"testing"
+	"time"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 
+	"github.com/becosuke/tasks-api/config"
 	pbmessage "github.com/becosuke/tasks-api/protogen/message/list"
 	pbservice "github.com/becosuke/tasks-api/protogen/service/list"
 )
@@ -62,10 +65,90 @@ func teardown() {
 	server.GracefulStop()
 }
 
-func TestGetCountAll(t *testing.T) {
+func TestCreate(t *testing.T) {
+	if !config.IsLocal() {
+		t.Log("skip test")
+		return
+	}
+
 	ctx := context.Background()
-	req := &pbmessage.GetCountAllRequest{}
-	res, err := client.GetCountAll(ctx, req)
+	req := &pbmessage.CreateRequest{Title: "created"}
+	res, err := client.Create(ctx, req)
+	if err != nil {
+		t.Error(err)
+	}
+
+	bs, _ := json.Marshal(res)
+	log.Print(string(bs))
+}
+
+func create(title string) (*pbmessage.Document, error) {
+	if !config.IsLocal() {
+		return nil, errors.New("skip test")
+	}
+
+	ctx := context.Background()
+	req := &pbmessage.CreateRequest{Title: title}
+	res, err := client.Create(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.Document, nil
+}
+
+func TestUpdate(t *testing.T) {
+	created, err := create("update")
+	if err != nil {
+		t.Error(err)
+	}
+
+	time.Sleep(1000 * time.Millisecond)
+	ctx := context.Background()
+	req := &pbmessage.UpdateRequest{Id: created.Id, Title: "updated"}
+	res, err := client.Update(ctx, req)
+	if err != nil {
+		t.Error(err)
+	}
+
+	bs, _ := json.Marshal(res)
+	log.Print(string(bs))
+}
+
+func TestDelete(t *testing.T) {
+	created, err := create("delete")
+	if err != nil {
+		t.Error(err)
+	}
+
+	time.Sleep(1000 * time.Millisecond)
+	ctx := context.Background()
+	req := &pbmessage.DeleteRequest{Id: created.Id}
+	res, err := client.Delete(ctx, req)
+	if err != nil {
+		t.Error(err)
+	}
+
+	bs, _ := json.Marshal(res)
+	log.Print(string(bs))
+}
+
+func TestGetDocument(t *testing.T) {
+	ctx := context.Background()
+	req := &pbmessage.GetDocumentRequest{Id: 1}
+	res, err := client.GetDocument(ctx, req)
+	if err != nil {
+		t.Error(err)
+	}
+
+	bs, _ := json.Marshal(res)
+	log.Print(string(bs))
+}
+
+func TestGetDocuments(t *testing.T) {
+	ctx := context.Background()
+	req := &pbmessage.GetDocumentsRequest{Ids: []uint64{1, 2, 3}}
+	res, err := client.GetDocuments(ctx, req)
 	if err != nil {
 		t.Error(err)
 	}
@@ -78,6 +161,18 @@ func TestGetDocumentsAll(t *testing.T) {
 	ctx := context.Background()
 	req := &pbmessage.GetDocumentsAllRequest{Limit: 3, Offset: 0}
 	res, err := client.GetDocumentsAll(ctx, req)
+	if err != nil {
+		t.Error(err)
+	}
+
+	bs, _ := json.Marshal(res)
+	log.Print(string(bs))
+}
+
+func TestGetCountAll(t *testing.T) {
+	ctx := context.Background()
+	req := &pbmessage.GetCountAllRequest{}
+	res, err := client.GetCountAll(ctx, req)
 	if err != nil {
 		t.Error(err)
 	}

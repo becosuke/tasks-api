@@ -182,7 +182,6 @@ func init() {
 		RestPort: restPort,
 		RestAddr: ":" + strconv.Itoa(restPort),
 	}
-
 }
 
 func GetConfig() *Config {
@@ -203,4 +202,8 @@ func NowTimestamp() int64 {
 	}
 
 	return time.Now().Unix()
+}
+
+func IsLocal() bool {
+	return GetConfig().TasksEnv == "local"
 }
