@@ -2,7 +2,7 @@ PROJECT_REPOSITORY=github.com/becosuke/tasks-api
 PROJECT_NAME=tasks
 DOCKER_NAME=tasks-golang
 DOCKER_GOPATH=/go
-PROTO_INCLUDE=-I protobuf -I /usr/include -I ${DOCKER_GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis
+PROTO_INCLUDE=-I protobuf -I /usr/include -I ${DOCKER_GOPATH}/src -I ${DOCKER_GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis
 GRPC_PATH=application/grpc
 REST_PATH=application/rest
 TASK_PATH=application/task
@@ -41,10 +41,12 @@ lint:
 proto: proto-common proto-list proto-context proto-task
 
 proto-common:
+	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/message/common.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/service/common.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --grpc-gateway_out=logtostderr=true:${DOCKER_GOPATH}/src protobuf/service/common.proto
 
 proto-list:
+	${PRECOMMAND} protoc ${PROTO_INCLUDE} --govalidators_out=${DOCKER_GOPATH}/src protobuf/message/list.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/message/list.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/service/list.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --grpc-gateway_out=logtostderr=true:${DOCKER_GOPATH}/src protobuf/service/list.proto
@@ -62,12 +64,15 @@ proto-task:
 swagger: swagger-list swagger-context swagger-task
 
 swagger-list:
+	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/message/list.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/service/list.proto
 
 swagger-context:
+	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/message/context.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/service/context.proto
 
 swagger-task:
+	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/message/task.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/service/task.proto
 
 test: test-grpc

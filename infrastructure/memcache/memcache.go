@@ -22,7 +22,7 @@ var conn = connection{}
 func Open() Connection {
 	conn.once.Do(func() {
 		conf := config.GetConfig()
-		client := memcache.New(conf.Memcache.URL...)
+		client := memcache.New(conf.Memcache.Url...)
 		conn.client = client
 	})
 

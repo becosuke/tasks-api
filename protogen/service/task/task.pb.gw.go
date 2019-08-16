@@ -9,13 +9,14 @@ It translates gRPC into RESTful JSON APIs.
 package task
 
 import (
+	"context"
 	"io"
 	"net/http"
 
+	"github.com/becosuke/tasks-api/protogen/message/task"
 	"github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/utilities"
-	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -29,10 +30,14 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
 func request_Task_Create_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateRequest
+	var protoReq task.CreateRequest
 	var metadata runtime.ServerMetadata
 
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -42,10 +47,14 @@ func request_Task_Create_0(ctx context.Context, marshaler runtime.Marshaler, cli
 }
 
 func request_Task_Update_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateRequest
+	var protoReq task.UpdateRequest
 	var metadata runtime.ServerMetadata
 
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -73,7 +82,7 @@ func request_Task_Update_0(ctx context.Context, marshaler runtime.Marshaler, cli
 }
 
 func request_Task_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteRequest
+	var protoReq task.DeleteRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -100,7 +109,7 @@ func request_Task_Delete_0(ctx context.Context, marshaler runtime.Marshaler, cli
 }
 
 func request_Task_GetDocument_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDocumentRequest
+	var protoReq task.GetDocumentRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -127,7 +136,7 @@ func request_Task_GetDocument_0(ctx context.Context, marshaler runtime.Marshaler
 }
 
 func request_Task_GetDocuments_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDocumentsRequest
+	var protoReq task.GetDocumentsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -158,10 +167,13 @@ var (
 )
 
 func request_Task_GetDocumentsAll_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDocumentsAllRequest
+	var protoReq task.GetDocumentsAllRequest
 	var metadata runtime.ServerMetadata
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Task_GetDocumentsAll_0); err != nil {
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Task_GetDocumentsAll_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -171,7 +183,7 @@ func request_Task_GetDocumentsAll_0(ctx context.Context, marshaler runtime.Marsh
 }
 
 func request_Task_GetCountAll_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetCountAllRequest
+	var protoReq task.GetCountAllRequest
 	var metadata runtime.ServerMetadata
 
 	msg, err := client.GetCountAll(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -184,7 +196,7 @@ var (
 )
 
 func request_Task_GetDocumentsByList_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDocumentsByListRequest
+	var protoReq task.GetDocumentsByListRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -205,7 +217,10 @@ func request_Task_GetDocumentsByList_0(ctx context.Context, marshaler runtime.Ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "list_id", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Task_GetDocumentsByList_0); err != nil {
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Task_GetDocumentsByList_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -215,7 +230,7 @@ func request_Task_GetDocumentsByList_0(ctx context.Context, marshaler runtime.Ma
 }
 
 func request_Task_GetCountByList_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetCountByListRequest
+	var protoReq task.GetCountByListRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -246,7 +261,7 @@ var (
 )
 
 func request_Task_GetDocumentsByListAndContexts_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDocumentsByListAndContextsRequest
+	var protoReq task.GetDocumentsByListAndContextsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -278,7 +293,10 @@ func request_Task_GetDocumentsByListAndContexts_0(ctx context.Context, marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "context_ids", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Task_GetDocumentsByListAndContexts_0); err != nil {
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Task_GetDocumentsByListAndContexts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -292,7 +310,7 @@ var (
 )
 
 func request_Task_GetCountByListAndContexts_0(ctx context.Context, marshaler runtime.Marshaler, client TaskClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetCountByListAndContextsRequest
+	var protoReq task.GetCountByListAndContextsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -324,7 +342,10 @@ func request_Task_GetCountByListAndContexts_0(ctx context.Context, marshaler run
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "context_ids", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Task_GetCountByListAndContexts_0); err != nil {
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Task_GetCountByListAndContexts_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
@@ -374,15 +395,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("POST", pattern_Task_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -403,15 +415,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("PUT", pattern_Task_Update_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -432,15 +435,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("DELETE", pattern_Task_Delete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -461,15 +455,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetDocument_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -490,15 +475,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetDocuments_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -519,15 +495,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetDocumentsAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -548,15 +515,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetCountAll_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -577,15 +535,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetDocumentsByList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -606,15 +555,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetCountByList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -635,15 +575,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetDocumentsByListAndContexts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -664,15 +595,6 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 	mux.Handle("GET", pattern_Task_GetCountByListAndContexts_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		if cn, ok := w.(http.CloseNotifier); ok {
-			go func(done <-chan struct{}, closed <-chan bool) {
-				select {
-				case <-done:
-				case <-closed:
-					cancel()
-				}
-			}(ctx.Done(), cn.CloseNotify())
-		}
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
@@ -694,27 +616,27 @@ func RegisterTaskHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 }
 
 var (
-	pattern_Task_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "task"}, ""))
+	pattern_Task_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "task"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "task", "id"}, ""))
+	pattern_Task_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "task", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "task", "id"}, ""))
+	pattern_Task_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "task", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetDocument_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "task", "id"}, ""))
+	pattern_Task_GetDocument_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "task", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetDocuments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "tasks", "document", "ids"}, ""))
+	pattern_Task_GetDocuments_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "tasks", "document", "ids"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetDocumentsAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "tasks", "all"}, ""))
+	pattern_Task_GetDocumentsAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "tasks", "all"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetCountAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "tasks", "all", "count"}, ""))
+	pattern_Task_GetCountAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "tasks", "all", "count"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetDocumentsByList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "tasks", "list", "list_id"}, ""))
+	pattern_Task_GetDocumentsByList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "tasks", "list", "list_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetCountByList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "tasks", "list", "list_id", "count"}, ""))
+	pattern_Task_GetCountByList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "tasks", "list", "list_id", "count"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetDocumentsByListAndContexts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"v1", "tasks", "list", "list_id", "contexts", "context_ids"}, ""))
+	pattern_Task_GetDocumentsByListAndContexts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5}, []string{"v1", "tasks", "list", "list_id", "contexts", "context_ids"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Task_GetCountByListAndContexts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"v1", "tasks", "list", "list_id", "contexts", "context_ids", "count"}, ""))
+	pattern_Task_GetCountByListAndContexts_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4, 1, 0, 4, 1, 5, 5, 2, 6}, []string{"v1", "tasks", "list", "list_id", "contexts", "context_ids", "count"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

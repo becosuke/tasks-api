@@ -60,10 +60,8 @@ func (t Time) ElaspedTime() string {
 		return ""
 	}
 
-	var elasped int64
-	conf := config.GetConfig()
-	now := conf.NowTimestamp
-	if elasped = now - t.Time.Unix(); elasped < 0 {
+	elasped := config.NowTimestamp() - t.Time.Unix()
+	if elasped < 0 {
 		elasped = 0
 	}
 

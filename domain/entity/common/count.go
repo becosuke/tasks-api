@@ -1,28 +1,18 @@
 package common
 
 import (
-	message "github.com/becosuke/tasks-api/protogen/message/common"
+	pbmessage "github.com/becosuke/tasks-api/protogen/message/common"
 )
 
-type Count message.Count
+type Count pbmessage.Count
 
 func (val *Count) Valid() bool {
-	if val != nil {
-		return true
-	}
-
-	return false
+	return val != nil
 }
 
-func (val *Count) Message() *message.Count {
-	if val.Valid() {
-		res := message.Count(*val)
-		return &res
+func (val *Count) Message() *pbmessage.Count {
+	if !val.Valid() {
+		return &pbmessage.Count{}
 	}
-
-	return &message.Count{}
-}
-
-func NewCount(count uint64) *Count {
-	return &Count{Count: count}
+	return (*pbmessage.Count)(val)
 }

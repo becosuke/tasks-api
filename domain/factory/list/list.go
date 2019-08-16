@@ -4,15 +4,15 @@ import (
 	entity "github.com/becosuke/tasks-api/domain/entity/list"
 )
 
-func Document(val *entity.Entity) *entity.Document {
-	if val.Valid() == false {
+func Document(val *entity.Record) *entity.Document {
+	if !val.Valid() {
 		return &entity.Document{}
 	}
 
 	res := &entity.Document{
-		Id:        val.ID,
+		Id:        val.Id,
 		Title:     val.Title,
-		Enabled:   val.Valid(),
+		Enabled:   true,
 		CreatedAt: val.CreatedAt.Unix(),
 		UpdatedAt: val.UpdatedAt.Unix(),
 		DeletedAt: val.DeletedAt.Unix(),

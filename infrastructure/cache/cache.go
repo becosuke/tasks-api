@@ -16,14 +16,13 @@ var dictSharedCache = sync.Map{}
 
 func getCachedAt(key string, expire int32) int64 {
 	cacheKey := fmt.Sprintf("%s_cached_at", key)
-	conf := config.GetConfig()
 
 	var cachedAt int64
 	localCachedAt, ok := dictCachedAt.Load(cacheKey)
-	if ok == false || conf.NowTimestamp-localCachedAt.(int64) > common.CacheExpireLocal {
+	if !ok || config.NowTimestamp()-localCachedAt.(int64) > common.CacheExpireLocal {
 		mc := memcache.Open()
 		if sharedCachedAt, mcError := mc.Get(cacheKey); mcError != nil {
-			cachedAt = conf.NowTimestamp
+			cachedAt = config.NowTimestamp()
 			mc.Set(cacheKey, common.Int64ToBytes(cachedAt), expire)
 		} else {
 			cachedAt = common.BytesToInt64(sharedCachedAt)
@@ -49,7 +48,7 @@ func GetLocalCache(key string, expire int32) (interface{}, bool) {
 	cachedAt := getCachedAt(key, expire)
 
 	entry, ok := dictLocalCache.Load(key)
-	if ok == false || cachedAt > entry.(common.Cache).CachedAt {
+	if !ok || cachedAt > entry.(common.Cache).CachedAt {
 		return nil, false
 	}
 
@@ -57,11 +56,9 @@ func GetLocalCache(key string, expire int32) (interface{}, bool) {
 }
 
 func SetLocalCache(key string, data interface{}) {
-	conf := config.GetConfig()
-
 	entry := common.Cache{
 		CachedData: data,
-		CachedAt:   conf.NowTimestamp,
+		CachedAt:   config.NowTimestamp(),
 	}
 	dictLocalCache.Store(key, entry)
 }
@@ -72,11 +69,9 @@ func DeleteLocalCache(key string) {
 }
 
 func GetSharedCache(key string) (interface{}, bool) {
-	conf := config.GetConfig()
-
 	var data interface{}
 	entry, ok := dictSharedCache.Load(key)
-	if ok == false || conf.NowTimestamp-entry.(common.Cache).CachedAt > common.CacheExpireLocal {
+	if !ok || config.NowTimestamp()-entry.(common.Cache).CachedAt > common.CacheExpireLocal {
 		mc := memcache.Open()
 		var tmp []byte
 		var mcError, decError error
@@ -92,7 +87,7 @@ func GetSharedCache(key string) (interface{}, bool) {
 
 		entry = common.Cache{
 			CachedData: data,
-			CachedAt:   conf.NowTimestamp,
+			CachedAt:   config.NowTimestamp(),
 		}
 		dictSharedCache.Store(key, entry)
 

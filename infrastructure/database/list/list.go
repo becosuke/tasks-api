@@ -12,9 +12,9 @@ import (
 	"github.com/becosuke/tasks-api/infrastructure/database"
 )
 
-func FindOne(id uint64) (*entity.Entity, error) {
+func FindOne(id uint64) (*entity.Record, error) {
 	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+	db, err := database.Open(conf.DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -27,7 +27,7 @@ func FindOne(id uint64) (*entity.Entity, error) {
 	}
 	defer stmt.Close()
 
-	res := &entity.Entity{}
+	res := &entity.Record{}
 	if err = stmt.Get(res, id); err != nil {
 		switch {
 		case err == sql.ErrNoRows:
@@ -40,9 +40,8 @@ func FindOne(id uint64) (*entity.Entity, error) {
 	return res, nil
 }
 
-func Create(title string) (*entity.Entity, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func Create(title string) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -55,7 +54,7 @@ func Create(title string) (*entity.Entity, error) {
 	}
 	defer stmt.Close()
 
-	now := common.NewDatetime(conf.NowDatetime)
+	now := common.NewDatetime(config.NowDatetime())
 	result, err := stmt.Exec(title, now.String(), now.String())
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -66,8 +65,8 @@ func Create(title string) (*entity.Entity, error) {
 		return nil, errors.WithStack(err)
 	}
 
-	res := &entity.Entity{
-		ID:        uint64(id),
+	res := &entity.Record{
+		Id:        uint64(id),
 		Title:     title,
 		CreatedAt: now,
 		UpdatedAt: now,
@@ -76,9 +75,8 @@ func Create(title string) (*entity.Entity, error) {
 	return res, nil
 }
 
-func Update(id uint64, title string) (*entity.Entity, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func Update(id uint64, title string) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -96,7 +94,7 @@ func Update(id uint64, title string) (*entity.Entity, error) {
 	}
 	defer stmt.Close()
 
-	now := common.NewDatetime(conf.NowDatetime)
+	now := common.NewDatetime(config.NowDatetime())
 	if _, err = stmt.Exec(title, now.String(), id); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -107,11 +105,8 @@ func Update(id uint64, title string) (*entity.Entity, error) {
 	return res, nil
 }
 
-func Delete(id uint64) (*entity.Entity, error) {
-	var err error
-
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func Delete(id uint64) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -129,7 +124,7 @@ func Delete(id uint64) (*entity.Entity, error) {
 	}
 	defer stmt.Close()
 
-	now := common.NewDatetime(conf.NowDatetime)
+	now := common.NewDatetime(config.NowDatetime())
 	if _, err = stmt.Exec(now.String(), id); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -139,18 +134,17 @@ func Delete(id uint64) (*entity.Entity, error) {
 	return res, nil
 }
 
-func FindPrimaryKeyAll(limit int32, offset int32) ([]uint64, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func FindPrimaryKeyAll(limit uint32, offset uint32) ([]uint64, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return make([]uint64, 0), errors.WithStack(err)
 	}
 
 	query := fmt.Sprintf("SELECT %s FROM %s WHERE deleted_at IS NULL ORDER BY id LIMIT ? OFFSET ?", entity.PrimaryKey, entity.Table)
 
 	stmt, err := db.Preparex(query)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return make([]uint64, 0), errors.WithStack(err)
 	}
 	defer stmt.Close()
 
@@ -168,8 +162,7 @@ func FindPrimaryKeyAll(limit int32, offset int32) ([]uint64, error) {
 }
 
 func CountAll() (uint64, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return 0, errors.WithStack(err)
 	}
