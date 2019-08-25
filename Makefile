@@ -52,11 +52,13 @@ proto-list:
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --grpc-gateway_out=logtostderr=true:${DOCKER_GOPATH}/src protobuf/service/list.proto
 
 proto-context:
+	${PRECOMMAND} protoc ${PROTO_INCLUDE} --govalidators_out=${DOCKER_GOPATH}/src protobuf/message/context.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/message/context.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/service/context.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --grpc-gateway_out=logtostderr=true:${DOCKER_GOPATH}/src protobuf/service/context.proto
 
 proto-task:
+	${PRECOMMAND} protoc ${PROTO_INCLUDE} --govalidators_out=${DOCKER_GOPATH}/src protobuf/message/task.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/message/task.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --go_out=plugins=grpc:${DOCKER_GOPATH}/src protobuf/service/task.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --grpc-gateway_out=logtostderr=true:${DOCKER_GOPATH}/src protobuf/service/task.proto
