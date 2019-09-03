@@ -4,22 +4,18 @@ import (
 	entity "github.com/becosuke/tasks-api/domain/entity/context"
 )
 
-func Document(val *entity.Entity) *entity.Document {
-	if val.Valid() == false {
+func Document(val *entity.Record) *entity.Document {
+	if !val.Valid() {
 		return &entity.Document{}
 	}
 
-	var enabled bool
-	if val.DeletedAt.IsNull() {
-		enabled = true
-	} else {
-		enabled = false
-	}
-
 	res := &entity.Document{
-		Id:      val.ID,
-		Title:   val.Title,
-		Enabled: enabled,
+		Id:        val.Id,
+		Title:     val.Title,
+		Enabled:   true,
+		CreatedAt: val.CreatedAt.Unix(),
+		UpdatedAt: val.UpdatedAt.Unix(),
+		DeletedAt: val.DeletedAt.Unix(),
 	}
 
 	return res

@@ -4,27 +4,22 @@ import (
 	"fmt"
 
 	"github.com/becosuke/tasks-api/domain/entity/common"
-	message "github.com/becosuke/tasks-api/protogen/message/context"
+	pbmessage "github.com/becosuke/tasks-api/protogen/message/context"
 )
 
 const Table = "context"
 const Database = "tasks"
 const PrimaryKey = "id"
 
-const EntityCacheKey = "context_entity_%d"
-const DocumentCacheKey = "context_document_%d"
-const KeyAllCacheKey = "context_key_all_%d_%d"
+const RecordCacheKey = "context_record_%d"
+const KeyAllCacheKey = "context_key_all_%d_%d" // limit, offset
 const CountAllCacheKey = "context_count_all"
 
-func GetEntityCacheKey(id uint64) string {
-	return fmt.Sprintf(EntityCacheKey, id)
+func GetRecordCacheKey(id uint64) string {
+	return fmt.Sprintf(RecordCacheKey, id)
 }
 
-func GetDocumentCacheKey(id uint64) string {
-	return fmt.Sprintf(DocumentCacheKey, id)
-}
-
-func GetKeyAllCacheKey(limit int32, offset int32) string {
+func GetKeyAllCacheKey(limit uint32, offset uint32) string {
 	return KeyAllCacheKey
 }
 
@@ -32,37 +27,49 @@ func GetCountAllCacheKey() string {
 	return CountAllCacheKey
 }
 
-type Entity struct {
-	ID        uint64          `db:"id"`
+type Record struct {
+	Id        uint64          `db:"id"`
 	Title     string          `db:"title"`
 	CreatedAt common.Datetime `db:"created_at"`
 	UpdatedAt common.Datetime `db:"updated_at"`
 	DeletedAt common.Datetime `db:"deleted_at"`
 }
 
-func (val *Entity) Valid() bool {
-	if val != nil && val.DeletedAt.IsNull() {
-		return true
-	}
-
-	return false
+func (val *Record) Valid() bool {
+	return val != nil && val.DeletedAt.IsNull()
 }
 
-type Document message.Document
+type Document pbmessage.Document
 
 func (val *Document) Valid() bool {
-	if val != nil && val.Enabled == true {
-		return true
-	}
-
-	return false
+	return val != nil && val.Enabled
 }
 
-func (val *Document) Message() *message.Document {
-	if val.Valid() {
-		res := message.Document(*val)
-		return &res
+func (val *Document) Message() *pbmessage.Document {
+	if !val.Valid() {
+		return &pbmessage.Document{}
 	}
 
-	return &message.Document{}
+	return (*pbmessage.Document)(val)
+}
+
+type Documents []*Document
+
+func (vals *Documents) Valid() bool {
+	return vals != nil && len(*vals) > 0
+}
+
+func (vals *Documents) Message() []*pbmessage.Document {
+	if !vals.Valid() {
+		return make([]*pbmessage.Document, 0)
+	}
+
+	res := make([]*pbmessage.Document, 0, len(*vals))
+	for _, val := range *vals {
+		if !val.Valid() {
+			continue
+		}
+		res = append(res, val.Message())
+	}
+	return res
 }

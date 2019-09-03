@@ -2,72 +2,87 @@ package context
 
 import (
 	"context"
-	"log"
 
 	"google.golang.org/grpc"
 
 	service "github.com/becosuke/tasks-api/domain/service/context"
-	"github.com/becosuke/tasks-api/protogen/message/common"
-	message "github.com/becosuke/tasks-api/protogen/message/context"
-	stub "github.com/becosuke/tasks-api/protogen/service/context"
+	"github.com/becosuke/tasks-api/logger"
+	pbmessage "github.com/becosuke/tasks-api/protogen/message/context"
+	pbservice "github.com/becosuke/tasks-api/protogen/service/context"
 )
 
 type Server struct{}
 
 func Register(grpcServer *grpc.Server) {
-	stub.RegisterContextServer(grpcServer, &Server{})
+	pbservice.RegisterContextServer(grpcServer, &Server{})
 }
 
-func (s *Server) GetDocument(ctx context.Context, request *common.Id) (*message.Document, error) {
-	val, err := service.GetDocument(request.Id)
+func (s *Server) Create(ctx context.Context, request *pbmessage.CreateRequest) (*pbmessage.CreateResponse, error) {
+	document, err := service.Create(request.Title)
 	if err != nil {
-		log.Printf("%+v", err)
-		return nil, err
+		logger.Error(err)
+		return &pbmessage.CreateResponse{}, err
 	}
 
-	return val.Message(), nil
+	return &pbmessage.CreateResponse{Result: true, Document: document.Message()}, nil
 }
 
-func (s *Server) GetDocuments(request *common.Ids, stream stub.Context_GetDocumentsServer) error {
-	vals, err := service.GetDocuments(request.Ids)
+func (s *Server) Update(ctx context.Context, request *pbmessage.UpdateRequest) (*pbmessage.UpdateResponse, error) {
+	document, err := service.Update(request.Id, request.Title)
 	if err != nil {
-		log.Printf("%+v", err)
-		return err
+		logger.Error(err)
+		return &pbmessage.UpdateResponse{}, err
 	}
 
-	for _, val := range vals {
-		if err := stream.Send(val.Message()); err != nil {
-			log.Printf("%+v", err)
-			return err
-		}
-	}
-
-	return nil
+	return &pbmessage.UpdateResponse{Result: true, Document: document.Message()}, nil
 }
 
-func (s *Server) GetDocumentsAll(request *common.Pagination, stream stub.Context_GetDocumentsAllServer) error {
-	vals, err := service.GetDocumentsAll(request.Limit, request.Offset)
+func (s *Server) Delete(ctx context.Context, request *pbmessage.DeleteRequest) (*pbmessage.DeleteResponse, error) {
+	document, err := service.Delete(request.Id)
 	if err != nil {
-		log.Printf("%+v", err)
-		return err
+		logger.Error(err)
+		return &pbmessage.DeleteResponse{}, err
 	}
 
-	for _, val := range vals {
-		if err := stream.Send(val.Message()); err != nil {
-			log.Printf("%+v", err)
-			return err
-		}
-	}
-
-	return nil
+	return &pbmessage.DeleteResponse{Result: true, Document: document.Message()}, nil
 }
 
-func (s *Server) GetCountAll(ctx context.Context, request *common.Empty) (*common.Count, error) {
-	val, err := service.GetCountAll()
+func (s *Server) GetDocument(ctx context.Context, request *pbmessage.GetDocumentRequest) (*pbmessage.GetDocumentResponse, error) {
+	document, err := service.GetDocument(request.Id)
 	if err != nil {
-		log.Printf("%+v", err)
-		return nil, err
+		logger.Error(err)
+		return &pbmessage.GetDocumentResponse{}, err
 	}
 
-	return val.Message(), nil
+	return &pbmessage.GetDocumentResponse{Document: document.Message()}, nil
+}
+
+func (s *Server) GetDocuments(ctx context.Context, request *pbmessage.GetDocumentsRequest) (*pbmessage.GetDocumentsResponse, error) {
+	documents, err := service.GetDocuments(request.Ids)
+	if err != nil {
+		logger.Error(err)
+		return &pbmessage.GetDocumentsResponse{}, err
+	}
+
+	return &pbmessage.GetDocumentsResponse{Documents: documents.Message()}, nil
+}
+
+func (s *Server) GetDocumentsAll(ctx context.Context, request *pbmessage.GetDocumentsAllRequest) (*pbmessage.GetDocumentsAllResponse, error) {
+	documents, err := service.GetDocumentsAll(request.Limit, request.Offset)
+	if err != nil {
+		logger.Error(err)
+		return &pbmessage.GetDocumentsAllResponse{}, err
+	}
+
+	return &pbmessage.GetDocumentsAllResponse{Documents: documents.Message()}, nil
+}
+
+func (s *Server) GetCountAll(ctx context.Context, request *pbmessage.GetCountAllRequest) (*pbmessage.GetCountAllResponse, error) {
+	count, err := service.GetCountAll()
+	if err != nil {
+		logger.Error(err)
+		return &pbmessage.GetCountAllResponse{}, err
+	}
+
+	return &pbmessage.GetCountAllResponse{Count: count.Message()}, nil
 }
