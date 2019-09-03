@@ -1,7 +1,6 @@
 package list
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/becosuke/tasks-api/domain/entity/common"
@@ -34,32 +33,6 @@ type Record struct {
 	CreatedAt common.Datetime `db:"created_at"`
 	UpdatedAt common.Datetime `db:"updated_at"`
 	DeletedAt common.Datetime `db:"deleted_at"`
-}
-
-func validateId(id uint64) error {
-	if id == 0 {
-		return errors.New("invalid id")
-	}
-	return nil
-}
-
-func validateIds(ids []uint64) error {
-	if len(ids) == 0 {
-		return errors.New("invalid ids")
-	}
-	for _, id := range ids {
-		if err := validateId(id); err != nil {
-			return errors.New("invalid ids")
-		}
-	}
-	return nil
-}
-
-func validateTitle(title string) error {
-	if len(title) == 0 {
-		return errors.New("invalid title")
-	}
-	return nil
 }
 
 func (val *Record) Valid() bool {
