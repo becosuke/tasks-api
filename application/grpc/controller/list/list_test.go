@@ -94,6 +94,8 @@ func create(title string) (*pbmessage.Document, error) {
 		return nil, err
 	}
 
+	bs, _ := json.Marshal(res.Document)
+	log.Print(string(bs))
 	return res.Document, nil
 }
 
