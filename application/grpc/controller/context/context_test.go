@@ -8,7 +8,6 @@ import (
 	"net"
 	"os"
 	"testing"
-	"time"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
@@ -16,6 +15,8 @@ import (
 	"google.golang.org/grpc/test/bufconn"
 
 	"github.com/becosuke/tasks-api/config"
+	entity "github.com/becosuke/tasks-api/domain/entity/context"
+	service "github.com/becosuke/tasks-api/domain/service/context"
 	pbmessage "github.com/becosuke/tasks-api/protogen/message/context"
 	pbservice "github.com/becosuke/tasks-api/protogen/service/context"
 )
@@ -82,21 +83,19 @@ func TestCreate(t *testing.T) {
 	log.Print(string(bs))
 }
 
-func create(title string) (*pbmessage.Document, error) {
+func create(title string) (*entity.Document, error) {
 	if !config.IsLocal() {
 		return nil, errors.New("skip test")
 	}
 
-	ctx := context.Background()
-	req := &pbmessage.CreateRequest{Title: title}
-	res, err := client.Create(ctx, req)
+	document, err := service.Create(title)
 	if err != nil {
 		return nil, err
 	}
 
-	bs, _ := json.Marshal(res.Document)
+	bs, _ := json.Marshal(document.Message())
 	log.Print(string(bs))
-	return res.Document, nil
+	return document, nil
 }
 
 func TestUpdate(t *testing.T) {
@@ -105,7 +104,6 @@ func TestUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	time.Sleep(1000 * time.Millisecond)
 	ctx := context.Background()
 	req := &pbmessage.UpdateRequest{Id: created.Id, Title: "updated"}
 	res, err := client.Update(ctx, req)
@@ -123,7 +121,6 @@ func TestDelete(t *testing.T) {
 		t.Error(err)
 	}
 
-	time.Sleep(1000 * time.Millisecond)
 	ctx := context.Background()
 	req := &pbmessage.DeleteRequest{Id: created.Id}
 	res, err := client.Delete(ctx, req)

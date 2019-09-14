@@ -12,36 +12,8 @@ import (
 	"github.com/becosuke/tasks-api/infrastructure/database"
 )
 
-func FindOne(id uint64) (*entity.Record, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.Url, entity.Database)
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	query := fmt.Sprintf("SELECT * FROM %s WHERE %s = ?", entity.Table, entity.PrimaryKey)
-
-	stmt, err := db.Preparex(query)
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-	defer stmt.Close()
-
-	res := &entity.Record{}
-	if err = stmt.Get(res, id); err != nil {
-		switch {
-		case err == sql.ErrNoRows:
-			return nil, nil
-		default:
-			return nil, errors.WithStack(err)
-		}
-	}
-
-	return res, nil
-}
-
 func Create(title string) (*entity.Record, error) {
-	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
+	db, err := database.Open(config.GetConfig().DatabaseMaster.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -76,7 +48,7 @@ func Create(title string) (*entity.Record, error) {
 }
 
 func Update(id uint64, title string) (*entity.Record, error) {
-	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
+	db, err := database.Open(config.GetConfig().DatabaseMaster.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -106,7 +78,7 @@ func Update(id uint64, title string) (*entity.Record, error) {
 }
 
 func Delete(id uint64) (*entity.Record, error) {
-	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
+	db, err := database.Open(config.GetConfig().DatabaseMaster.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -130,6 +102,33 @@ func Delete(id uint64) (*entity.Record, error) {
 	}
 
 	res.DeletedAt = now
+
+	return res, nil
+}
+
+func FindOne(id uint64) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	query := fmt.Sprintf("SELECT * FROM %s WHERE %s = ?", entity.Table, entity.PrimaryKey)
+
+	stmt, err := db.Preparex(query)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	defer stmt.Close()
+
+	res := &entity.Record{}
+	if err = stmt.Get(res, id); err != nil {
+		switch {
+		case err == sql.ErrNoRows:
+			return nil, nil
+		default:
+			return nil, errors.WithStack(err)
+		}
+	}
 
 	return res, nil
 }

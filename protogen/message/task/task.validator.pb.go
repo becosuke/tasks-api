@@ -7,8 +7,8 @@ import (
 	fmt "fmt"
 	math "math"
 	proto "github.com/golang/protobuf/proto"
-	_ "github.com/mwitkow/go-proto-validators"
 	_ "github.com/becosuke/tasks-api/protogen/message/common"
+	_ "github.com/mwitkow/go-proto-validators"
 	github_com_mwitkow_go_proto_validators "github.com/mwitkow/go-proto-validators"
 )
 
@@ -40,9 +40,6 @@ func (this *CreateResponse) Validate() error {
 func (this *UpdateRequest) Validate() error {
 	if !(this.Id > 0) {
 		return github_com_mwitkow_go_proto_validators.FieldError("Id", fmt.Errorf(`value '%v' must be greater than '0'`, this.Id))
-	}
-	if !(this.ListId > 0) {
-		return github_com_mwitkow_go_proto_validators.FieldError("ListId", fmt.Errorf(`value '%v' must be greater than '0'`, this.ListId))
 	}
 	if this.Title == "" {
 		return github_com_mwitkow_go_proto_validators.FieldError("Title", fmt.Errorf(`value '%v' must not be an empty string`, this.Title))

@@ -3,6 +3,7 @@ package task
 import (
 	"database/sql"
 	"fmt"
+	"strings"
 
 	"github.com/pkg/errors"
 
@@ -12,37 +13,8 @@ import (
 	"github.com/becosuke/tasks-api/infrastructure/database"
 )
 
-func FindOne(id uint64) (*entity.Entity, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	query := fmt.Sprintf("SELECT * FROM %s WHERE %s = ?", entity.Table, entity.PrimaryKey)
-
-	stmt, err := db.Preparex(query)
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-	defer stmt.Close()
-
-	res := &entity.Entity{}
-	if err = stmt.Get(res, id); err != nil {
-		switch {
-		case err == sql.ErrNoRows:
-			return nil, nil
-		default:
-			return nil, errors.WithStack(err)
-		}
-	}
-
-	return res, nil
-}
-
-func Create(listID uint64, title string) (*entity.Entity, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func Create(listId uint64, title string) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseMaster.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -55,8 +27,8 @@ func Create(listID uint64, title string) (*entity.Entity, error) {
 	}
 	defer stmt.Close()
 
-	now := common.NewDatetime(conf.NowDatetime)
-	result, err := stmt.Exec(listID, title, now.String(), now.String())
+	now := common.NewDatetime(config.NowDatetime())
+	result, err := stmt.Exec(listId, title, now.String(), now.String())
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -66,9 +38,9 @@ func Create(listID uint64, title string) (*entity.Entity, error) {
 		return nil, errors.WithStack(err)
 	}
 
-	res := &entity.Entity{
-		ID:        uint64(id),
-		ListID:    listID,
+	res := &entity.Record{
+		Id:        uint64(id),
+		ListId:    listId,
 		Title:     title,
 		CreatedAt: now,
 		UpdatedAt: now,
@@ -77,9 +49,8 @@ func Create(listID uint64, title string) (*entity.Entity, error) {
 	return res, nil
 }
 
-func Update(id uint64, listID uint64, title string) (*entity.Entity, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func Update(id uint64, title string) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseMaster.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -89,7 +60,7 @@ func Update(id uint64, listID uint64, title string) (*entity.Entity, error) {
 		return nil, errors.WithStack(err)
 	}
 
-	query := fmt.Sprintf("UPDATE %s set list_id = ?, title = ?, updated_at = ? WHERE id = ?", entity.Table)
+	query := fmt.Sprintf("UPDATE %s set title = ?, updated_at = ? WHERE id = ?", entity.Table)
 
 	stmt, err := db.Preparex(query)
 	if err != nil {
@@ -97,21 +68,19 @@ func Update(id uint64, listID uint64, title string) (*entity.Entity, error) {
 	}
 	defer stmt.Close()
 
-	now := common.NewDatetime(conf.NowDatetime)
-	if _, err = stmt.Exec(listID, title, now.String(), id); err != nil {
+	now := common.NewDatetime(config.NowDatetime())
+	if _, err = stmt.Exec(title, now.String(), id); err != nil {
 		return nil, errors.WithStack(err)
 	}
 
-	res.ListID = listID
 	res.Title = title
 	res.UpdatedAt = now
 
 	return res, nil
 }
 
-func Delete(id uint64) (*entity.Entity, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func Delete(id uint64) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseMaster.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -129,7 +98,7 @@ func Delete(id uint64) (*entity.Entity, error) {
 	}
 	defer stmt.Close()
 
-	now := common.NewDatetime(conf.NowDatetime)
+	now := common.NewDatetime(config.NowDatetime())
 	if _, err = stmt.Exec(now.String(), id); err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -139,9 +108,35 @@ func Delete(id uint64) (*entity.Entity, error) {
 	return res, nil
 }
 
-func FindPrimaryKeyAll(limit int32, offset int32) ([]uint64, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func FindOne(id uint64) (*entity.Record, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	query := fmt.Sprintf("SELECT * FROM %s WHERE %s = ?", entity.Table, entity.PrimaryKey)
+
+	stmt, err := db.Preparex(query)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	defer stmt.Close()
+
+	res := &entity.Record{}
+	if err = stmt.Get(res, id); err != nil {
+		switch {
+		case err == sql.ErrNoRows:
+			return nil, nil
+		default:
+			return nil, errors.WithStack(err)
+		}
+	}
+
+	return res, nil
+}
+
+func FindPrimaryKeyAll(limit uint32, offset uint32) ([]uint64, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -168,8 +163,7 @@ func FindPrimaryKeyAll(limit int32, offset int32) ([]uint64, error) {
 }
 
 func CountAll() (uint64, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return 0, errors.WithStack(err)
 	}
@@ -190,11 +184,8 @@ func CountAll() (uint64, error) {
 	return res, nil
 }
 
-func FindPrimaryKeyByRelationalKey(listID uint64, limit int32, offset int32) ([]uint64, error) {
-	var err error
-
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func FindPrimaryKeyByRelationalKey(listId uint64, limit uint32, offset uint32) ([]uint64, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -208,7 +199,7 @@ func FindPrimaryKeyByRelationalKey(listID uint64, limit int32, offset int32) ([]
 	defer stmt.Close()
 
 	var res []uint64
-	if err = stmt.Select(&res, listID, limit, offset); err != nil {
+	if err = stmt.Select(&res, listId, limit, offset); err != nil {
 		switch {
 		case err == sql.ErrNoRows:
 			return make([]uint64, 0), nil
@@ -220,9 +211,8 @@ func FindPrimaryKeyByRelationalKey(listID uint64, limit int32, offset int32) ([]
 	return res, nil
 }
 
-func CountByRelationalKey(listID uint64) (uint64, error) {
-	conf := config.GetConfig()
-	db, err := database.Open(conf.DatabaseSlave.URL, entity.Database)
+func CountByRelationalKey(listId uint64) (uint64, error) {
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
 	if err != nil {
 		return 0, errors.WithStack(err)
 	}
@@ -236,7 +226,75 @@ func CountByRelationalKey(listID uint64) (uint64, error) {
 	defer stmt.Close()
 
 	var res uint64
-	if err = stmt.Get(&res, listID); err != nil {
+	if err = stmt.Get(&res, listId); err != nil {
+		return 0, errors.WithStack(err)
+	}
+
+	return res, nil
+}
+
+func FindPrimaryKeyByRelationalKeyAndProperties(listId uint64, contextIds []uint64, limit uint32, offset uint32) ([]uint64, error) {
+	if len(contextIds) == 0 {
+		return make([]uint64, 0), nil
+	}
+
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	query := fmt.Sprintf(
+		"SELECT %s FROM %s WHERE %s = ? AND context_ids IN(%s) AND deleted_at is null ORDER BY id LIMIT ? OFFSET ?",
+		entity.PrimaryKey,
+		entity.Table,
+		entity.RelationalKey,
+		strings.Trim(strings.Replace(fmt.Sprint(contextIds), " ", ",", -1), "[]"),
+	)
+
+	stmt, err := db.Preparex(query)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	defer stmt.Close()
+
+	var res []uint64
+	if err = stmt.Select(&res, listId, limit, offset); err != nil {
+		switch {
+		case err == sql.ErrNoRows:
+			return make([]uint64, 0), nil
+		default:
+			return nil, errors.WithStack(err)
+		}
+	}
+
+	return res, nil
+}
+
+func CountByRelationalKeyAndProperties(listId uint64, contextIds []uint64) (uint64, error) {
+	if len(contextIds) == 0 {
+		return 0, nil
+	}
+
+	db, err := database.Open(config.GetConfig().DatabaseSlave.Url, entity.Database)
+	if err != nil {
+		return 0, errors.WithStack(err)
+	}
+
+	query := fmt.Sprintf(
+		"SELECT COUNT(*) count FROM %s WHERE %s = ? AND context_ids IN(%s) deleted_at is null ",
+		entity.Table,
+		entity.RelationalKey,
+		strings.Trim(strings.Replace(fmt.Sprint(contextIds), " ", ",", -1), "[]"),
+	)
+
+	stmt, err := db.Preparex(query)
+	if err != nil {
+		return 0, errors.WithStack(err)
+	}
+	defer stmt.Close()
+
+	var res uint64
+	if err = stmt.Get(&res, listId); err != nil {
 		return 0, errors.WithStack(err)
 	}
 
