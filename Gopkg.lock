@@ -3,11 +3,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:f98385a9b77f6cacae716a59c04e6ac374d101466d4369c4e8cc706a39c4bb2e"
+  digest = "1:615811fa58b830195c12ad4509eb40d0daf34872879cfb8bd3d65e08df2d0c3f"
   name = "github.com/bradfitz/gomemcache"
   packages = ["memcache"]
   pruneopts = "UT"
-  revision = "551aad21a6682b95329c1f5bd62ee5060d64f7e8"
+  revision = "a41fca850d0b6f392931a78cbae438803ea0b886"
 
 [[projects]]
   digest = "1:ec6f9bf5e274c833c911923c9193867f3f18788c461f76f05f62bb1510e0ae65"
@@ -18,15 +18,15 @@
   version = "v1.4.1"
 
 [[projects]]
-  digest = "1:4597fa93b0165f3ed32adc916709b1ad4c15ba771f70e282c11f0c4bdb9c36bf"
+  digest = "1:2cab9ddc879a22b4dc018f6d94c93ec86b9735b2d95a03098f1837a00d2168ae"
   name = "github.com/gogo/protobuf"
   packages = [
     "proto",
     "protoc-gen-gogo/descriptor",
   ]
   pruneopts = "UT"
-  revision = "ba06b47c162d49f2af050fb4c75bcbc86a159d5c"
-  version = "v1.2.1"
+  revision = "0ca988a254f991240804bf9821f3450d87ccbb1b"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:b532ee3f683c057e797694b5bfeb3827d89e6adf41c53dbc80e549bca76364ea"
@@ -50,18 +50,18 @@
   version = "v1.3.2"
 
 [[projects]]
-  digest = "1:a7edf0e23f83cf94fd8c0687ca9192f30a27dc613a9110fd3b6bf5b6785d9083"
+  digest = "1:45ab5ee330ae6ebea8dccfe75f096f45f9d1f79565e4c6566fe006fe30cbac6e"
   name = "github.com/grpc-ecosystem/go-grpc-middleware"
   packages = [
     ".",
     "validator",
   ]
   pruneopts = "UT"
-  revision = "c250d6563d4d4c20252cd865923440e829844f4e"
-  version = "v1.0.0"
+  revision = "dd15ed025b6054e5253963e355991f3070d4e593"
+  version = "v1.1.0"
 
 [[projects]]
-  digest = "1:3b341cd71012c63aacddabfc70b9110be8e30c553349552ad3f77242843f2d03"
+  digest = "1:ba39ca7cca7e938362e5e7ecccaeca10aed61c8acb230de78c0ab44e45a610a8"
   name = "github.com/grpc-ecosystem/grpc-gateway"
   packages = [
     "internal",
@@ -69,8 +69,8 @@
     "utilities",
   ]
   pruneopts = "UT"
-  revision = "ad529a448ba494a88058f9e5be0988713174ac86"
-  version = "v1.9.5"
+  revision = "2dfdd971e2e70fb436ffcdf845b7313c43606848"
+  version = "v1.11.2"
 
 [[projects]]
   digest = "1:6c41d4f998a03b6604227ccad36edaed6126c397e5d78709ef4814a1145a6757"
@@ -84,12 +84,12 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:d2e6fc950c494412ec16427c279e1a90d239138e221ad83e46b976fb8bc07e6c"
+  digest = "1:60ef9039248ab7efda98d531eca4c312bd502931e778ac2db7ebac4ccde4abf4"
   name = "github.com/mwitkow/go-proto-validators"
   packages = ["."]
   pruneopts = "UT"
-  revision = "710a5f439cfd41b0cf6c6916255b6c1784ad23c6"
-  version = "v0.1.0"
+  revision = "d70d97bb65387105677cb21cee7318e4feb7b4b0"
+  version = "v0.2.0"
 
 [[projects]]
   digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
@@ -101,10 +101,9 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d2aa096fe6b539afe74dd6ab8e9a160304707f1477b01c637b4bbe20d262a25c"
+  digest = "1:ec0b21c65dd414b1306ee9b9f6f2e7d631029dd4c4b274a7d37f332c5fbabe28"
   name = "golang.org/x/net"
   packages = [
-    "context",
     "http/httpguts",
     "http2",
     "http2/hpack",
@@ -113,15 +112,15 @@
     "trace",
   ]
   pruneopts = "UT"
-  revision = "ca1201d0de80cfde86cb01aea620983605dfe99b"
+  revision = "c00fd9afed17cfdca9b3e1e3b8de7ef2b3f0347b"
 
 [[projects]]
   branch = "master"
-  digest = "1:47844666be86089349a441f5f0ece22f42a87a8cb8c9a31294c593f43209ad19"
+  digest = "1:1b90e63244513e8514749f45da58e89350d35cb3e12416ce6ed95f41c2a1f177"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "fde4db37ae7ad8191b03d30d27f258b5291ae4e3"
+  revision = "c990c680b611ac1aeb7d8f2af94a825f98d69720"
 
 [[projects]]
   digest = "1:8d8faad6b12a3a4c819a3f9618cb6ee1fa1cfc33253abeeea8b55336721e3405"
@@ -153,8 +152,8 @@
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
   pruneopts = "UT"
-  revision = "b2f4a3cf3c67576a2ee09e1fe62656a5086ce880"
-  version = "v1.6.1"
+  revision = "bddb1f54ecfd64b1350fd2dd897fa11d426632bc"
+  version = "v1.6.4"
 
 [[projects]]
   branch = "master"
@@ -167,10 +166,10 @@
     "protobuf/field_mask",
   ]
   pruneopts = "UT"
-  revision = "fa694d86fc64c7654a660f8908de4e879866748d"
+  revision = "7ee9db18f195a533914d703fa8b21f3518ffd7f2"
 
 [[projects]]
-  digest = "1:581c9b0fe9354faf730ff231cf3682089e0b703073cf10e3976219609d27a9ea"
+  digest = "1:a26428be26c0f0483588dd404f6ee9241dac936433aa4db3fa940869c71d8fab"
   name = "google.golang.org/grpc"
   packages = [
     ".",
@@ -206,10 +205,11 @@
     "stats",
     "status",
     "tap",
+    "test/bufconn",
   ]
   pruneopts = "UT"
-  revision = "045159ad57f3781d409358e3ade910a018c16b30"
-  version = "v1.22.1"
+  revision = "f6d0f9ee430895e87ef1ceb5ac8f39725bafceef"
+  version = "v1.24.0"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -232,6 +232,7 @@
     "google.golang.org/grpc/grpclog",
     "google.golang.org/grpc/metadata",
     "google.golang.org/grpc/status",
+    "google.golang.org/grpc/test/bufconn",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
