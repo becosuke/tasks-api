@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
+	"sync"
+
 	"github.com/becosuke/tasks-api/config"
 	"github.com/becosuke/tasks-api/domain/entity/common"
 	"github.com/becosuke/tasks-api/infrastructure/memcache"
-	"sync"
 )
 
 var dictCachedAt = sync.Map{}
@@ -23,7 +24,7 @@ func getCachedAt(key string, expire int32) int64 {
 		mc := memcache.Open()
 		if sharedCachedAt, mcError := mc.Get(cacheKey); mcError != nil {
 			cachedAt = config.NowTimestamp()
-			mc.Set(cacheKey, common.Int64ToBytes(cachedAt), expire)
+			_ = mc.Set(cacheKey, common.Int64ToBytes(cachedAt), expire)
 		} else {
 			cachedAt = common.BytesToInt64(sharedCachedAt)
 		}
@@ -41,7 +42,7 @@ func deleteCachedAt(key string) {
 	dictLocalCache.Delete(cacheKey)
 
 	mc := memcache.Open()
-	mc.Delete(cacheKey)
+	_ = mc.Delete(cacheKey)
 }
 
 func GetLocalCache(key string, expire int32) (interface{}, bool) {
@@ -101,7 +102,7 @@ func SetSharedCache(key string, data interface{}, expire int32) {
 	mc := memcache.Open()
 	buf := bytes.NewBuffer(nil)
 	if gobError := gob.NewEncoder(buf).Encode(&data); gobError == nil {
-		mc.Set(key, buf.Bytes(), expire)
+		_ = mc.Set(key, buf.Bytes(), expire)
 	}
 }
 
@@ -120,5 +121,5 @@ func GetSharedNumber(key string) (uint64, bool) {
 func SetSharedNumber(key string, data uint64, expire int32) {
 	mc := memcache.Open()
 	tmp := common.Uint64ToBytes(data)
-	mc.Set(key, tmp, expire)
+	_ = mc.Set(key, tmp, expire)
 }
