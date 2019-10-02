@@ -1,4 +1,4 @@
-package helper
+package auth
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	service "github.com/becosuke/tasks-api/domain/service/auth"
 )
 
-func GetUserID(ctx context.Context) (uint64, bool) {
+func GetUserId(ctx context.Context) (uint64, bool) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if ok == false {
 		return 0, false
