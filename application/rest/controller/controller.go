@@ -6,7 +6,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 
-	"github.com/becosuke/tasks-api/application/rest/helper/base"
+	"github.com/becosuke/tasks-api/application/rest/helper/router"
 	pbcont "github.com/becosuke/tasks-api/protogen/service/context"
 	pblist "github.com/becosuke/tasks-api/protogen/service/list"
 	pbtask "github.com/becosuke/tasks-api/protogen/service/task"
@@ -28,6 +28,6 @@ func registerer(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientCon
 	return nil
 }
 
-func NewRouter() *base.Router {
-	return base.NewRouter(registerer)
+func NewRouter() *router.Router {
+	return router.NewRouter(registerer)
 }
