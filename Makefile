@@ -77,18 +77,29 @@ swagger-task:
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/message/task.proto
 	${PRECOMMAND} protoc ${PROTO_INCLUDE} --swagger_out=logtostderr=true:./swagger protobuf/service/task.proto
 
-test: test-grpc
+test: test-grpc test-rest
 
-test-grpc: test-list test-context test-task
+test-grpc: test-grpc-list test-grpc-context test-grpc-task
 
-test-list:
+test-grpc-list:
 	${PRECOMMAND} go test -v ${PROJECT_REPOSITORY}/${GRPC_PATH}/controller/list
 
-test-context:
+test-grpc-context:
 	${PRECOMMAND} go test -v ${PROJECT_REPOSITORY}/${GRPC_PATH}/controller/context
 
-test-task:
+test-grpc-task:
 	${PRECOMMAND} go test -v ${PROJECT_REPOSITORY}/${GRPC_PATH}/controller/task
+
+test-rest: test-rest-list test-rest-context test-rest-task
+
+test-rest-list:
+	${PRECOMMAND} go test -v ${PROJECT_REPOSITORY}/${REST_PATH}/controller/list
+
+test-rest-context:
+	${PRECOMMAND} go test -v ${PROJECT_REPOSITORY}/${REST_PATH}/controller/context
+
+test-rest-task:
+	${PRECOMMAND} go test -v ${PROJECT_REPOSITORY}/${REST_PATH}/controller/task
 
 build: build-grpc build-rest
 

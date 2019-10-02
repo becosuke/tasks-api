@@ -1,4 +1,4 @@
-package task
+package list
 
 import (
 	"context"
@@ -6,14 +6,14 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 
-	"github.com/becosuke/tasks-api/application/rest/router/base"
-	stub "github.com/becosuke/tasks-api/protogen/service/task"
+	"github.com/becosuke/tasks-api/application/rest/helper/base"
+	pbservice "github.com/becosuke/tasks-api/protogen/service/list"
 )
 
 func registerer(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
 	var err error
 
-	if err = stub.RegisterTaskHandler(ctx, mux, conn); err != nil {
+	if err = pbservice.RegisterListHandler(ctx, mux, conn); err != nil {
 		return err
 	}
 

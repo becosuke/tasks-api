@@ -2,6 +2,7 @@ package list
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -11,14 +12,13 @@ import (
 	"os"
 	"testing"
 
-	"github.com/golang/protobuf/jsonpb"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 
-	app "github.com/becosuke/tasks-api/application/grpc/server/list"
+	controller "github.com/becosuke/tasks-api/application/grpc/controller/list"
 	"github.com/becosuke/tasks-api/config"
-	"github.com/becosuke/tasks-api/domain/entity/common"
-	message "github.com/becosuke/tasks-api/protogen/message/list"
+	entity "github.com/becosuke/tasks-api/domain/entity/list"
+	service "github.com/becosuke/tasks-api/domain/service/list"
 )
 
 var server *grpc.Server
@@ -41,10 +41,10 @@ func setup() error {
 		return err
 	}
 	server = grpc.NewServer()
-	app.Register(server)
+	controller.Register(server)
 
 	go func() {
-		server.Serve(listen)
+		_ = server.Serve(listen)
 	}()
 
 	router := NewRouter()
@@ -61,9 +61,23 @@ func teardown() {
 	server.GracefulStop()
 }
 
+func create(title string) (*entity.Document, error) {
+	if !config.IsLocal() {
+		return nil, errors.New("skip test")
+	}
+
+	document, err := service.Create(title)
+	if err != nil {
+		return &entity.Document{}, err
+	}
+
+	bs, _ := json.Marshal(document.Message())
+	log.Print(string(bs))
+	return document, nil
+}
+
 func TestCreate(t *testing.T) {
-	conf := config.GetConfig()
-	if conf.TasksEnv == common.EnvProduction {
+	if !config.IsLocal() {
 		t.Log("skip test")
 		return
 	}
@@ -85,43 +99,13 @@ func TestCreate(t *testing.T) {
 	t.Log(w.Body.String())
 }
 
-func createDocument() (*message.Document, error) {
-	conf := config.GetConfig()
-	if conf.TasksEnv == common.EnvProduction {
-		return nil, errors.New("skip test")
-	}
-
-	param := `{"title": "created"}`
-	req, err := http.NewRequest(http.MethodPost, "/v1/list", bytes.NewBufferString(param))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	w := httptest.NewRecorder()
-	mux.ServeHTTP(w, req)
-
-	if w.Code != http.StatusOK {
-		return nil, err
-	}
-
-	created := &message.Document{}
-	err = jsonpb.Unmarshal(w.Body, created)
-	if err != nil {
-		return nil, err
-	}
-
-	return created, nil
-}
-
 func TestUpdate(t *testing.T) {
-	conf := config.GetConfig()
-	if conf.TasksEnv == common.EnvProduction {
+	if !config.IsLocal() {
 		t.Log("skip test")
 		return
 	}
 
-	created, err := createDocument()
+	created, err := create("update")
 	if err != nil {
 		t.Error(err)
 	}
@@ -144,13 +128,12 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	conf := config.GetConfig()
-	if conf.TasksEnv == common.EnvProduction {
+	if !config.IsLocal() {
 		t.Log("skip test")
 		return
 	}
 
-	created, err := createDocument()
+	created, err := create("delete")
 	if err != nil {
 		t.Error(err)
 	}

@@ -9,8 +9,8 @@ import (
 	"os"
 	"testing"
 
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
+	grpcmiddleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpcvalidator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 
@@ -37,11 +37,11 @@ func TestMain(m *testing.M) {
 func setup() error {
 	listen := bufconn.Listen(1024 * 1024)
 	server = grpc.NewServer(
-		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
-			grpc_validator.StreamServerInterceptor(),
+		grpc.StreamInterceptor(grpcmiddleware.ChainStreamServer(
+			grpcvalidator.StreamServerInterceptor(),
 		)),
-		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-			grpc_validator.UnaryServerInterceptor(),
+		grpc.UnaryInterceptor(grpcmiddleware.ChainUnaryServer(
+			grpcvalidator.UnaryServerInterceptor(),
 		)),
 	)
 	Register(server)
@@ -66,6 +66,21 @@ func teardown() {
 	server.GracefulStop()
 }
 
+func create(title string) (*entity.Document, error) {
+	if !config.IsLocal() {
+		return nil, errors.New("skip test")
+	}
+
+	document, err := service.Create(title)
+	if err != nil {
+		return &entity.Document{}, err
+	}
+
+	bs, _ := json.Marshal(document.Message())
+	log.Print(string(bs))
+	return document, nil
+}
+
 func TestCreate(t *testing.T) {
 	if !config.IsLocal() {
 		t.Log("skip test")
@@ -83,22 +98,12 @@ func TestCreate(t *testing.T) {
 	log.Print(string(bs))
 }
 
-func create(title string) (*entity.Document, error) {
-	if !config.IsLocal() {
-		return nil, errors.New("skip test")
-	}
-
-	document, err := service.Create(title)
-	if err != nil {
-		return &entity.Document{}, err
-	}
-
-	bs, _ := json.Marshal(document.Message())
-	log.Print(string(bs))
-	return document, nil
-}
-
 func TestUpdate(t *testing.T) {
+	if !config.IsLocal() {
+		t.Log("skip test")
+		return
+	}
+
 	created, err := create("update")
 	if err != nil {
 		t.Error(err)
@@ -116,6 +121,11 @@ func TestUpdate(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
+	if !config.IsLocal() {
+		t.Log("skip test")
+		return
+	}
+
 	created, err := create("delete")
 	if err != nil {
 		t.Error(err)

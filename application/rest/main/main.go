@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 
-	"github.com/becosuke/tasks-api/application/rest/router"
+	"github.com/becosuke/tasks-api/application/rest/controller"
 )
 
 func main() {
 	var err error
-	r := router.NewRouter()
+	r := controller.NewRouter()
 
 	if err = r.Setup(); err != nil {
 		log.Fatal(err)

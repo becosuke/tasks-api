@@ -32,16 +32,21 @@ func (r *Router) GetMux() *runtime.ServeMux {
 }
 
 func (r *Router) Setup() error {
-	var err error
-	conf := config.GetConfig()
-
 	ctx := context.Background()
 	r.ctx, r.Cancel = context.WithCancel(ctx)
 
-	r.mux = runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(headerMatcher))
+	r.mux = runtime.NewServeMux(runtime.WithIncomingHeaderMatcher(func (headerName string) (string, bool) {
+		mdName := "x-device-type"
+		if headerName == "X-Device-Type" {
+			return mdName, true
+		}
+
+		return mdName, false
+	}))
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
-	r.conn, err = grpc.Dial(conf.GrpcAddr, opts...)
+	var err error
+	r.conn, err = grpc.Dial(config.GetConfig().GrpcAddr, opts...)
 	if err != nil {
 		return err
 	}
@@ -55,19 +60,10 @@ func (r *Router) Setup() error {
 }
 
 func (r *Router) Close() {
-	var err error
-	conf := config.GetConfig()
-
-	if err != nil {
-		if cerr := r.conn.Close(); cerr != nil {
-			grpclog.Infof("Failed to close conn to %s: %v", conf.GrpcAddr, cerr)
-		}
-		return
-	}
 	go func() {
 		<-r.ctx.Done()
-		if cerr := r.conn.Close(); cerr != nil {
-			grpclog.Infof("Failed to close conn to %s: %v", conf.GrpcAddr, cerr)
+		if err := r.conn.Close(); err != nil {
+			grpclog.Infof("Failed to close conn to %s: %v", config.GetConfig().GrpcAddr, err)
 		}
 	}()
 }
@@ -76,13 +72,4 @@ func (r *Router) Run() error {
 	conf := config.GetConfig()
 
 	return http.ListenAndServe(conf.RestAddr, r.mux)
-}
-
-func headerMatcher(headerName string) (string, bool) {
-	mdName := "x-device-type"
-	if headerName == "X-Device-Type" {
-		return mdName, true
-	}
-
-	return mdName, false
 }
